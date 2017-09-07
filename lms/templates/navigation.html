@@ -47,6 +47,19 @@ site_status_msg = get_site_status_msg(course_id)
 % endif
 </%block>
   <header id="global-navigation" class="header-global ${"slim" if course else ""}" >
+
+    <!-- Google Analytics Tracking Script -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-53085410-24', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
     <nav class="wrapper-header" aria-label="${_('Global')}">
       <h1 class="hd logo-header">
         <div class="logo">
@@ -104,7 +117,7 @@ site_status_msg = get_site_status_msg(course_id)
 
       <%include file="user_dropdown.html"/>
 
-      <a href="${get_online_help_info(online_help_token)['doc_url']}" 
+      <a href="${get_online_help_info(online_help_token)['doc_url']}"
          target="_blank"
          class="doc-link">${_("Help")}</a>
 
