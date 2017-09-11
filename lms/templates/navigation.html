@@ -13,8 +13,13 @@ from openedx.core.djangolib.markup import HTML, Text
 from branding import api as branding_api
 # app that handles site status messages
 from status.status import get_site_status_msg
+from openedx.features.course_experience import course_home_url_name
 from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_enabled, released_languages
+from courseware.courses import get_courses
+from student.models import CourseEnrollment
 %>
+
+
 
 ## Provide a hook for themes to inject branding on top.
 <%block name="navigation_top" />
@@ -46,7 +51,20 @@ site_status_msg = get_site_status_msg(course_id)
 </div>
 % endif
 </%block>
-  <header id="global-navigation" class="header-global ${"slim" if course else ""}" >
+  <header id="global-navigation" class="header-global" >
+
+    <script>
+
+    $(document).ready(function(){
+        $('#alu_courses').hover(function(){
+        $('.coursetray').css("visibility", "initial");
+        }, function(){
+        $('.coursetray').css("visibility", "hidden");
+        });
+      });
+
+    </script>
+
     <nav class="wrapper-header" aria-label="${_('Global')}">
       <h1 class="hd logo-header">
         <div class="logo">
@@ -74,12 +92,33 @@ site_status_msg = get_site_status_msg(course_id)
       </h1>
 
       % if user.is_authenticated():
+
         <ol class="left nav-global list-inline authenticated">
-        <%block name="navigation_global_links_authenticated">
+        ##<%block name="navigation_global_links_authenticated">
           % if settings.FEATURES.get('COURSES_ARE_BROWSABLE') and not show_program_listing:
-            <li class="item nav-global-01">
-              <a href="${marketing_link('COURSES')}">${_('Explore courses')}</a>
+          <li id="alu_courses" class="item nav-global-01">
+            <a href="${marketing_link('COURSES')}">${_('Courses')}</a>
+            <div class="coursetray">
+            <div class="coursetrayheader">
+              <h1>Enrolled Courses</h1>
+              <a href="${marketing_link('COURSES')}" class="coursetraybutton">View All Courses</a>
+            </div>
+
+            <%
+              enrollment_list = []
+              enrollment_list = CourseEnrollment.enrollments_for_user(user)
+            %>
+            % if len(enrollment_list) > 0:
+              %for co in enrollment_list:
+                  <a href="${reverse(course_home_url_name(co.course_overview.id), args=[unicode(co.course_overview.id)])}" class="coursetraycourse">${co.course_overview.display_name_with_default}</a>
+              %endfor
+            % else:
+                <section>
+                  <h2>You are not enrolled in any courses yet.</h2>
+                </section>
+              %endif
             </li>
+
           % endif
           % if show_program_listing:
             <li class="tab-nav-item">
@@ -99,14 +138,16 @@ site_status_msg = get_site_status_msg(course_id)
               <a href="${reverse('sysadmin')}">${_("Sysadmin")}</a>
             </li>
           %endif
-        </%block>
+        ##</%block>
       </ol>
 
       <%include file="user_dropdown.html"/>
 
-      <a href="${get_online_help_info(online_help_token)['doc_url']}" 
+      <a href="${get_online_help_info(online_help_token)['doc_url']}"
          target="_blank"
-         class="doc-link">${_("Help")}</a>
+         class="doc-link">${_("Help")} </a>
+
+
 
       % if should_display_shopping_cart_func() and not (course and static.is_request_in_themed_site()): # see shoppingcart.context_processor.user_has_cart_context_processor
         <ol class="user">
