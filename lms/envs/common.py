@@ -2676,6 +2676,9 @@ OPTIONAL_APPS = (
     'enterprise',
     # Required by the Enterprise App
     'django_object_actions',  # https://github.com/crccheck/django-object-actions
+
+    # ALUx Staff HQ application
+    'alux_skills_map',
 )
 
 for app_name in OPTIONAL_APPS:
