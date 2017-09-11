@@ -1,0 +1,393 @@
+## <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+## <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+## <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+
+<%page expression_filter="h"/>
+##<%inherit file="main.html" />
+<%namespace name='static' file='../static_content.html'/>
+
+<%!
+from django.core.urlresolvers import reverse
+%>
+
+<%block name="header_extras">
+% for template_name in ["donation"]:
+<script type="text/template" id="${template_name}-tpl">
+  <%static:include path="dashboard/${template_name}.underscore" />
+</script>
+% endfor
+</%block>
+
+
+    <section class="container dashboard" id="dashboard-main">
+
+      <br><br>
+
+         <ol class="breadcrumb">
+          <li><a href="${marketing_link('ROOT')}">ALUx Platform</a></li>
+          <li><a href="${reverse('skills_map:skills-hq')}">HQ</a></li>
+          <li><a href="${reverse('skills_map:skills-tree')}">Skills Tree</a></li>
+             % for parent in parents:
+                 <li><a href="${reverse('skills_map:item', kwargs={'item_type': parent.item_type_slug, 'slug': parent.slug})}">
+                     ${parent.name}
+                 </a></li>
+             % endfor
+
+          <li class="active">${item}</li>
+        </ol>
+
+        <h1>${item._meta.verbose_name} - ${item}</h1>
+        % if item.item_type_slug == 'learning-outcome':
+            <p>${item.description}</p>
+        % endif
+        <hr style="padding:0px;height:3px;border:none;color:#eee;background-color:#eee;">
+
+        <div class="row">
+            <div class="col-md-6">
+
+                <!-- Buttons at top of screeen -->
+                 <div class="row">
+                    <div class="col-md-2">
+                        <a type="button" class="btn btn-danger" id="delete-item-modal">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                             ## Delete ${item.get_child_type()._meta.verbose_name}
+                        </a>
+                    </div>
+                     % if item.item_type_slug != 'education-programme':
+                         <div class="col-md-3">
+                            <a type="button" class="btn btn-default" id="reset-weights-button">
+                                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset Weights
+                            </a>
+                        </div>
+                     % endif
+                    <div class="col-md-2">
+                        <a type="button" class="btn btn-default" id="create-item-modal">
+                            <i class="fa fa-plus"></i> Add
+                            ## Add ${item.get_child_type()._meta.verbose_name}
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        % if item.get_child_type():
+
+            % if item.item_type_slug == 'education-programme':
+                <div class="col-md-3">
+            % else:
+                <div class="col-md-6">
+            % endif
+
+
+            <h2>Linked ${item.get_child_type()._meta.verbose_name}s</h2>
+            % for i, child in enumerate(children):
+
+                <h3>${i+1}.
+                   % if child.item_type_slug:
+                        <a href=" ${reverse('skills_map:item', kwargs={'item_type': child.item_type_slug, 'slug': child.slug})}">
+                       ${child}
+                   % else:
+                       ${child}
+                   % endif
+
+                    </a>
+                     </h3>
+
+                % if child.item_type_slug != 'meta-skill':
+                    <h4>
+                        Weight:
+                        <a href="#" class="weight" id="${child.slug}" ></a>
+                    </h4>
+                <br><br>
+                % endif
+
+            % endfor
+            </div>
+
+
+
+             % if item.item_type_slug == 'education-programme':
+                <div class="col-md-9">
+                    <div id="tree"></div>
+                    <%include file="tree_visualization.html" />
+                </div>
+            % else:
+
+            <div class="col-md-6">
+                <canvas id="myChart" width="400" height="400"></canvas>
+
+            </div>
+            % endif
+        % endif
+        </div>
+    </section>
+
+    % if item.get_child_type():
+
+    <div id="create-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add a
+                ${item.get_child_type()._meta.verbose_name}
+            </h4>
+        </div>
+
+      <div class="modal-body">
+         <form action="${reverse('skills_map:add-item')}" method="post">
+             <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
+             <input type="hidden" name="item-type" value="${item.get_child_type().item_type_slug}">
+             <input type="hidden" name="parent" value="${item.id}">
+
+##               <div class="input-group">
+
+                  % if item.get_child_type().item_type_slug == 'course-core-skill':
+                      <div class="form-group">
+                          <label for="sel1">Select a course to add:</label>
+                          <select class="form-control" name="item-name">
+                              % for c in courses:
+                                 <option value="${c}">${c.display_name}</option>
+                              % endfor
+
+                          </select>
+                      </div>
+
+##                   % elif item.item_type_slug == 'learning-outcome':
+##                       <div class="input-group">
+##                           <div class="form-group">
+##                               <label for="sel1">Select a course to add:</label>
+##                               <select class="form-control" name="item-name">
+##                                   % for assignment in assignments:
+##                                       <option value='
+##                                       {"item-name": "${assignment.display_name_with_default} (${assignment.sub_section.display_name_with_default})",
+##                                        "assignment-id": "${assignment.slug}"}'>
+##                                         ${assignment.display_name_with_default} (${assignment.sub_section.display_name_with_default})
+##                                       </option>
+##                                   % endfor
+##
+##                               </select>
+##                           </div>
+##                       </div>
+                  % else:
+                      <div class="input-group">
+                          <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span></span>
+                          <input type="text" name="item-name" class="form-control"
+                                 placeholder="${item.get_child_type()._meta.verbose_name} Title" id="title">
+                      </div>
+                  % endif
+
+                  % if item.get_child_type().item_type_slug == 'learning-outcome':
+                      <br>
+                      <div class="form-group">
+                          <textarea name="item-description" class="form-control" placeholder="Description" rows="5" id="description"></textarea>
+                        </div>
+                  % endif
+
+##                 </div>
+                <br>
+                <br>
+            <input class="btn btn-default pull-right" type="submit" value="Create">
+            <br>
+            <br>
+
+         </form>
+      </div>
+
+    </div>
+
+
+    </div>
+    </div>
+
+
+<!-- Delete modal -->
+
+<div id="delete-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Delete a
+                ${item.get_child_type()._meta.verbose_name}
+            </h4>
+            <p>This will delete all nodes that feed into this node.</p>
+        </div>
+
+      <div class="modal-body">
+         <form action="${reverse('skills_map:delete-item')}" method="post">
+             <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
+             <input type="hidden" name="item-type" value="${item.get_child_type().item_type_slug}">
+             <input type="hidden" name="slug" value="${item.slug}">
+
+##              <label for="title">
+##                  ${item.get_child_type()._meta.verbose_name}
+##                  Title</label>
+              <div class="input-group">
+
+                  <div class="form-group">
+                      <label for="sel1">Select one to delete:</label>
+                      <select class="form-control" name="item-id">
+                          % for child in children:
+                             <option value="${child.id}">${child}</option>
+                          % endfor
+
+                      </select>
+                  </div>
+
+
+                </div>
+                <br>
+                <br>
+            <input class="btn btn-danger pull-right" type="submit" value="Delete">
+            <br>
+            <br>
+
+         </form>
+      </div>
+
+    </div>
+
+
+    </div>
+</div>
+
+ % endif
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script>
+            $('#create-item-modal').click(function() {
+                $('#create-modal').modal('show');
+            });
+
+            $('#reset-weights-button').click(function() {
+                $.post("${reverse('skills_map:reset-weights')}",
+                        {"item-type": "${item.item_type_slug}", slug : "${item.slug}", "csrfmiddlewaretoken": "${ csrf_token }"}, function(data) {
+                    location.reload();
+                });
+            });
+
+            $('#delete-item-modal').click(function() {
+                $('#delete-modal').modal('show');
+            });
+    </script>
+
+    % if item.item_type_slug != 'education-programme':
+        <script>
+            $(document).ready(function() {
+    //toggle `popup` / `inline` mode
+    $.fn.editable.defaults.mode = 'inline';
+
+    % for i, child in enumerate(children):
+        % if child.item_type_slug != 'meta-skill':
+    //make username editable
+        $('#${child.slug}').editable({
+            type: 'number',
+            title: 'Add weight',
+            placement: 'right',
+            value: ${child.weight if child.weight else 0},
+            source: [
+                {value: 1, text: 'status 1'},
+                {value: 2, text: 'status 2'},
+                {value: 3, text: 'status 3'}
+            ],
+            url: '${reverse('skills_map:add-weight')}',
+            pk: ${i+1},
+            params: function(params) {  //params already contain `name`, `value` and `pk`
+                //console.log(params);
+                var data = {};
+                data['id'] = params.pk;
+                data['item-type'] = '${item.get_child_type().item_type_slug}';
+                data['item-slug'] = params.name;
+                data['weight'] = params.value;
+                data['csrfmiddlewaretoken'] = '${ csrf_token }';
+                return data;
+            },
+            success: function(response) {
+                location.reload();;
+            },
+    });
+        % endif
+
+    % endfor
+});
+
+        $( document ).ready(function () {
+
+
+            var ctx = $("#myChart");
+
+            let weights = $(".weight");
+            console.log(weights);
+            console.log(weights.length);
+
+
+            let weight_data = [];
+            let labels = [
+                % for child in children:
+                    "${child}",
+                % endfor
+            ]
+
+            for (let i = 0; i < weights.length; i++) {
+                console.log(i, weights[i].innerHTML);
+                weight_data.push(weights[i].innerHTML)
+            }
+
+
+
+            var doughnut_data = {
+                labels: labels,
+                datasets: [
+                    {
+                        data: weight_data,
+                        backgroundColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        hoverBackgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ]
+                    }]
+            };
+
+            var myDoughnutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: doughnut_data,
+                ##             options: {
+                ##                 animation:{
+                ##                     animateScale:true
+                ##                 }
+                ##             }
+                        });
+        });
+
+        </script>
+
+        % endif
