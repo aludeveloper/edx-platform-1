@@ -103,6 +103,10 @@ urlpatterns = (
 
     # URLs for API access management
     url(r'^api-admin/', include('openedx.core.djangoapps.api_admin.urls', namespace='api_admin')),
+
+    # URLs for Staff HQ
+    url(r'^skills/', include('lms.djangoapps.alux_skills_map.urls', namespace="skills_map")),
+
 )
 
 urlpatterns += (
