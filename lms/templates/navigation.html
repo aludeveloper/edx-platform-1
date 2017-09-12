@@ -51,15 +51,46 @@ site_status_msg = get_site_status_msg(course_id)
 </div>
 % endif
 </%block>
-  <header id="global-navigation" class="header-global" >
 
+<style>
+.custom-course-header {
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  font-size: 1rem;
+  height: 35px;
+  color: white;
+  line-height: 1.5;
+  background-color: #af272f;
+}
+
+.custom-course-header-text {
+  padding-top: 5px;
+  padding-left: 115px;
+  padding-bottom: 10px;
+  font-weight: 500;
+  font-size: large;
+}
+
+#alu_courses {
+   transition:visibility 0s linear 0.5s,opacity 0.5s linear;
+}
+
+.alu_dropdown_icon {
+  margin-left: 5px;
+}
+</style>
+
+  <header id="global-navigation" class="header-global" >
     <script>
 
     $(document).ready(function(){
         $('#alu_courses').hover(function(){
         $('.coursetray').css("visibility", "initial");
+        $('.alu_dropdown_icon').css("color","#002A3A");
         }, function(){
         $('.coursetray').css("visibility", "hidden");
+        $('.alu_dropdown_icon').css("color","white");
         });
       });
 
@@ -74,21 +105,6 @@ site_status_msg = get_site_status_msg(course_id)
             </%block>
           </a>
         </div>
-
-        % if course:
-          <div class="course-header">
-            <span class="provider">${course.display_org_with_default}:</span>
-            <span class="course-number">${course.display_number_with_default}</span>
-            <%
-            display_name = course.display_name_with_default
-            if settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
-              ccx = get_current_ccx(course.id)
-              if ccx:
-                display_name = ccx.display_name
-            %>
-            <span class="course-name">${display_name}</span>
-          </div>
-          % endif
       </h1>
 
       % if user.is_authenticated():
@@ -97,7 +113,7 @@ site_status_msg = get_site_status_msg(course_id)
         ##<%block name="navigation_global_links_authenticated">
           % if settings.FEATURES.get('COURSES_ARE_BROWSABLE') and not show_program_listing:
           <li id="alu_courses" class="item nav-global-01">
-            <a href="${marketing_link('COURSES')}">${_('Courses')}</a>
+            <a href="${marketing_link('COURSES')}">${_('Courses')} <i class="fa fa-caret-down alu_dropdown_icon" aria-hidden="true"></i></a>
             <div class="coursetray">
             <div class="coursetrayheader">
               <h1>Enrolled Courses</h1>
@@ -120,6 +136,7 @@ site_status_msg = get_site_status_msg(course_id)
             </li>
 
           % endif
+
           % if show_program_listing:
             <li class="tab-nav-item">
               <a class="${'active ' if reverse('dashboard') == request.path else ''}tab-nav-link" href="${reverse('dashboard')}">
@@ -234,7 +251,6 @@ site_status_msg = get_site_status_msg(course_id)
                 </select>
             </label>
           </form>
-        </li>
       </ol>
       % endif
       % endif
@@ -249,6 +265,22 @@ site_status_msg = get_site_status_msg(course_id)
     ff_link=HTML('<a href="http://www.mozilla.org/firefox" target="_blank">Firefox</a>'),
 )}</div>
 <![endif]-->
+
+  <div class="custom-course-header">
+    <div class="custom-course-header-text">
+      <span class="provider">${course.display_org_with_default}:</span>
+      <span class="course-number">${course.display_number_with_default}</span>
+      <%
+      display_name = course.display_name_with_default
+      if settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
+        ccx = get_current_ccx(course.id)
+        if ccx:
+          display_name = ccx.display_name
+      %>
+      <span class="course-name">${display_name}</span>
+    </div>
+  </div>
+
 % endif
 
 <%include file="help_modal.html"/>
