@@ -1,0 +1,177 @@
+$alu-blue: #002a3a;
+$nav-logo-padding: 10px 15px 0 15px;
+$nav-link-padding: 28px 15px 27px 15px;
+$nav-signin-padding: 15px 15px 0 15px;
+$nav-useritems-padding: 18px 15px 27px 15px;
+
+.header-global {
+    background: $alu-blue;
+
+    .wrapper-header {
+		height: 100%;
+		padding: initial;
+
+	}
+
+	.logo {
+		padding: $nav-logo-padding;
+
+
+	}
+
+
+    .nav-global {
+		margin-top: initial;
+		height: 100%;
+
+
+    	li,
+    	div {
+    		margin: initial;
+			height: 100%;
+
+    		a {
+    			color: white;
+    			padding: $nav-link-padding;
+
+    		&:hover,
+    		&:focus {
+    			background-color: #fff;
+    			height: 28%;
+    			color: #002a3a;
+
+    		}
+
+
+    		}
+
+    	}
+
+    	li {
+
+    		&:hover {
+    			background-color: #fff;
+
+    			>a {
+					color: #002a3a;
+    			}
+
+    		}
+
+    	}
+	}
+
+	.nav-courseware {
+
+		li {
+			padding: $nav-signin-padding;
+		}
+	}
+
+	.primary {
+
+		>a {
+			box-shadow: initial;
+		}
+
+		>a:hover {
+			background: initial;
+		}
+	}
+
+	.coursetray {
+		position: absolute;
+	    top: 76px;
+	    width: 700px;
+	    height: auto!important;
+	    padding: 20px 40px;
+	    box-sizing: content-box;
+	    box-shadow: 2px 2px 2px rgba(0,0,0,0.15);
+	    border-top: 4px solid #af272f;
+	    background: #fff;
+	    z-index: 1000;
+	    visibility: hidden;
+
+	    .coursetrayheader {
+	    	border-bottom: 1px solid #4e4e4e;
+	    	padding-bottom: 20px;
+	    	margin-bottom: 20px;
+	    	display: block;
+	    	height: initial;
+
+	    	> h1 {
+	    		margin-bottom: 0px;
+	    		text-align: left;
+	    		display: inline-block;
+	    		padding-top: 13px;
+	    	}
+
+	    	.coursetraybutton {
+	    		background: #af272f;
+	    		float: right;
+	    		clear: right;
+	    		letter-spacing: -0.03em;
+	    		box-shadow: none;
+	    		display: inline-block;
+	    		padding-top: 15px;
+	    		padding-bottom: 15px;
+	    	}
+	    }
+
+		.coursetraycourse {
+			color: #002a3a;
+			padding: 0;
+			font-weight: 500;
+			line-height: 2.5;
+			font-size: 15px;
+			width: 100%;
+    		margin: 0 0 0.25em;
+
+			&:hover {
+				color: #af272f;
+			}
+		}
+
+
+
+	}
+
+	.user {
+		padding: $nav-useritems-padding;
+
+		.user-link{
+
+			.label-username {
+				color: white;
+			}
+		}
+
+		>.primary {
+			margin: 0 8px;
+		}
+
+	}
+
+	.dropdown {
+		font-size: 1.5em;
+		color: #fff;
+		background: initial;
+	}
+
+	.dropdown-menu {
+		right: 5px;
+	}
+
+	.doc-link {
+  		margin: 30px 15px 15px 15px;
+  		color: #fff;
+
+  	&:visited {
+    	color: #fff;
+  		}
+	}
+
+}
+
+
+

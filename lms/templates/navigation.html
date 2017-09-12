@@ -13,8 +13,13 @@ from openedx.core.djangolib.markup import HTML, Text
 from branding import api as branding_api
 # app that handles site status messages
 from status.status import get_site_status_msg
+from openedx.features.course_experience import course_home_url_name
 from openedx.core.djangoapps.lang_pref.api import header_language_selector_is_enabled, released_languages
+from courseware.courses import get_courses
+from student.models import CourseEnrollment
 %>
+
+
 
 ## Provide a hook for themes to inject branding on top.
 <%block name="navigation_top" />
@@ -46,7 +51,68 @@ site_status_msg = get_site_status_msg(course_id)
 </div>
 % endif
 </%block>
-  <header id="global-navigation" class="header-global ${"slim" if course else ""}" >
+
+<style>
+.custom-course-header {
+  display: block;
+  width: 100%;
+  font-weight: 400;
+  font-size: 1rem;
+  height: 35px;
+  color: white;
+  line-height: 1.5;
+  background-color: #af272f;
+}
+
+.custom-course-header-text {
+  padding-top: 5px;
+  padding-bottom: 10px;
+  font-weight: 500;
+  font-size: large;
+  margin: 0 auto;
+  max-width: 1180px;
+}
+
+.custom-course-listing {
+  -webkit-column-count:2;
+  -moz-column-count: 2;
+  column-count: 2 ;
+}
+
+#alu_courses {
+   transition:visibility 0s linear 0.5s,opacity 0.5s linear;
+}
+
+.alu_dropdown_icon {
+  margin-left: 5px;
+}
+
+</style>
+
+  <header id="global-navigation" class="header-global" >
+    <script>
+    
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-53085410-24', 'auto');
+      ga('send', 'pageview');
+
+
+    $(document).ready(function(){
+        $('#alu_courses').hover(function(){
+        $('.coursetray').css("visibility", "initial");
+        $('.alu_dropdown_icon').css("color","#002A3A");
+        }, function(){
+        $('.coursetray').css("visibility", "hidden");
+        $('.alu_dropdown_icon').css("color","white");
+        });
+      });
+
+    </script>
+
     <nav class="wrapper-header" aria-label="${_('Global')}">
       <h1 class="hd logo-header">
         <div class="logo">
@@ -56,31 +122,41 @@ site_status_msg = get_site_status_msg(course_id)
             </%block>
           </a>
         </div>
-
-        % if course:
-          <div class="course-header">
-            <span class="provider">${course.display_org_with_default}:</span>
-            <span class="course-number">${course.display_number_with_default}</span>
-            <%
-            display_name = course.display_name_with_default
-            if settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
-              ccx = get_current_ccx(course.id)
-              if ccx:
-                display_name = ccx.display_name
-            %>
-            <span class="course-name">${display_name}</span>
-          </div>
-          % endif
       </h1>
 
       % if user.is_authenticated():
+
         <ol class="left nav-global list-inline authenticated">
-        <%block name="navigation_global_links_authenticated">
+        ##<%block name="navigation_global_links_authenticated">
           % if settings.FEATURES.get('COURSES_ARE_BROWSABLE') and not show_program_listing:
-            <li class="item nav-global-01">
-              <a href="${marketing_link('COURSES')}">${_('Explore courses')}</a>
+          <li id="alu_courses" class="item nav-global-01">
+            <a href="${marketing_link('COURSES')}">${_('Courses')} <i class="fa fa-caret-down alu_dropdown_icon" aria-hidden="true"></i></a>
+            <div class="coursetray">
+            <div class="coursetrayheader">
+              <h1>Enrolled Courses</h1>
+              <a href="${marketing_link('COURSES')}" class="coursetraybutton">View All Courses</a>
+            </div>
+
+            <%
+              enrollment_list = []
+              enrollment_list = CourseEnrollment.enrollments_for_user(user)
+            %>
+            % if len(enrollment_list) > 0:
+
+            <div class="custom-course-listing">
+              %for co in enrollment_list:
+                  <a href="${reverse(course_home_url_name(co.course_overview.id), args=[unicode(co.course_overview.id)])}" class="coursetraycourse">${co.course_overview.display_name_with_default}</a>
+              %endfor
+            </div>
+            % else:
+                <section>
+                  <h2>You are not enrolled in any courses yet.</h2>
+                </section>
+              %endif
             </li>
+
           % endif
+
           % if show_program_listing:
             <li class="tab-nav-item">
               <a class="${'active ' if reverse('dashboard') == request.path else ''}tab-nav-link" href="${reverse('dashboard')}">
@@ -99,14 +175,16 @@ site_status_msg = get_site_status_msg(course_id)
               <a href="${reverse('sysadmin')}">${_("Sysadmin")}</a>
             </li>
           %endif
-        </%block>
+        ##</%block>
       </ol>
 
       <%include file="user_dropdown.html"/>
 
-      <a href="${get_online_help_info(online_help_token)['doc_url']}" 
+      <a href="${get_online_help_info(online_help_token)['doc_url']}"
          target="_blank"
-         class="doc-link">${_("Help")}</a>
+         class="doc-link">${_("Help")} </a>
+
+
 
       % if should_display_shopping_cart_func() and not (course and static.is_request_in_themed_site()): # see shoppingcart.context_processor.user_has_cart_context_processor
         <ol class="user">
@@ -193,7 +271,6 @@ site_status_msg = get_site_status_msg(course_id)
                 </select>
             </label>
           </form>
-        </li>
       </ol>
       % endif
       % endif
@@ -208,6 +285,22 @@ site_status_msg = get_site_status_msg(course_id)
     ff_link=HTML('<a href="http://www.mozilla.org/firefox" target="_blank">Firefox</a>'),
 )}</div>
 <![endif]-->
+
+  <div class="custom-course-header">
+    <div class="custom-course-header-text">
+      <span class="provider">${course.display_org_with_default}:</span>
+      <span class="course-number">${course.display_number_with_default}</span>
+      <%
+      display_name = course.display_name_with_default
+      if settings.FEATURES.get('CUSTOM_COURSES_EDX', False):
+        ccx = get_current_ccx(course.id)
+        if ccx:
+          display_name = ccx.display_name
+      %>
+      <span class="course-name">${display_name}</span>
+    </div>
+  </div>
+
 % endif
 
 <%include file="help_modal.html"/>
