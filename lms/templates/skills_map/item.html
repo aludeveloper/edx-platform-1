@@ -56,25 +56,53 @@ from django.core.urlresolvers import reverse
 
                 <!-- Buttons at top of screeen -->
                  <div class="row">
-                    <div class="col-md-2">
-                        <a type="button" class="btn btn-danger" id="delete-item-modal">
-                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
-                             ## Delete ${item.get_child_type()._meta.verbose_name}
-                        </a>
-                    </div>
-                     % if item.item_type_slug != 'education-programme':
+
+                     % if item.item_type_slug == 'course-core-skill':
+                         <div class="col-md-3">
+                            <a type="button" class="btn btn-danger" id="unlink-lo-modal-open">
+                                <i class="fa fa-plus"></i> Unlink LO
+                            </a>
+                        </div>
+                     % else:
+                         <div class="col-md-2">
+                            <a type="button" class="btn btn-danger" id="delete-item-modal">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+                                ## Delete ${item.get_child_type()._meta.verbose_name}
+                            </a>
+                        </div>
+                     % endif
+
+
+
+                     % if item.item_type_slug != 'education-programme' or item.item_type_slug != 'course-core-skill':
                          <div class="col-md-3">
                             <a type="button" class="btn btn-default" id="reset-weights-button">
                                 <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset Weights
                             </a>
                         </div>
                      % endif
-                    <div class="col-md-2">
-                        <a type="button" class="btn btn-default" id="create-item-modal">
-                            <i class="fa fa-plus"></i> Add
-                            ## Add ${item.get_child_type()._meta.verbose_name}
-                        </a>
-                    </div>
+
+                     % if item.item_type_slug == 'course-core-skill':
+                         <div class="col-md-2">
+                            <a type="button" class="btn btn-default" id="link-lo-modal-open">
+                                <i class="fa fa-plus"></i> Link LO
+                            </a>
+                        </div>
+                     % else:
+                         <div class="col-md-2">
+                            <a type="button" class="btn btn-default" id="create-item-modal">
+                                <i class="fa fa-plus"></i> Add
+                                ## Add ${item.get_child_type()._meta.verbose_name}
+                            </a>
+                        </div>
+                     % endif
+
+##                     <div class="col-md-2">
+##                         <a type="button" class="btn btn-default" id="create-item-modal">
+##                             <i class="fa fa-plus"></i> Add
+##                             ## Add ${item.get_child_type()._meta.verbose_name}
+##                         </a>
+##                     </div>
 
                 </div>
             </div>
@@ -165,23 +193,6 @@ from django.core.urlresolvers import reverse
 
                           </select>
                       </div>
-
-##                   % elif item.item_type_slug == 'learning-outcome':
-##                       <div class="input-group">
-##                           <div class="form-group">
-##                               <label for="sel1">Select a course to add:</label>
-##                               <select class="form-control" name="item-name">
-##                                   % for assignment in assignments:
-##                                       <option value='
-##                                       {"item-name": "${assignment.display_name_with_default} (${assignment.sub_section.display_name_with_default})",
-##                                        "assignment-id": "${assignment.slug}"}'>
-##                                         ${assignment.display_name_with_default} (${assignment.sub_section.display_name_with_default})
-##                                       </option>
-##                                   % endfor
-##
-##                               </select>
-##                           </div>
-##                       </div>
                   % else:
                       <div class="input-group">
                           <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span></span>
@@ -209,6 +220,95 @@ from django.core.urlresolvers import reverse
 
     </div>
 
+
+    </div>
+    </div>
+
+
+
+<!-- Link LO modal -->
+
+    <div id="link-lo-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">
+                Link a learning outcome
+            </h4>
+        </div>
+
+      <div class="modal-body">
+         <form action="${reverse('skills_map:link-lo-course')}" method="post">
+             <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
+             <input type="hidden" name="course-core-skill" value="${item.id}">
+
+             <div class="form-group">
+                 <label for="sel1">Select an LO to link:</label>
+                 <select class="form-control" name="lo-to-link">
+                     % for learning_outcome in learning_outcomes:
+                         <option value="${learning_outcome.get('id')}">${learning_outcome.get('name')}</option>
+                     % endfor
+                 </select>
+             </div>
+
+             <br>
+             <br>
+            <input class="btn btn-default pull-right" type="submit" value="Link">
+            <br>
+            <br>
+
+         </form>
+      </div>
+
+    </div>
+
+    </div>
+    </div>
+
+
+<!-- unlink LO modal -->
+
+    <div id="unlink-lo-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">
+                Link a learning outcome
+            </h4>
+        </div>
+
+      <div class="modal-body">
+         <form action="${reverse('skills_map:unlink-lo-course')}" method="post">
+             <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
+             <input type="hidden" name="course-core-skill" value="${item.id}">
+
+             <div class="form-group">
+                 <label for="sel1">Select an LO to unlink:</label>
+                 <select class="form-control" name="lo-to-unlink">
+                     % for child in children:
+                         <option value="${child.id}">${child}</option>
+                     % endfor
+                 </select>
+             </div>
+
+             <br>
+             <br>
+            <input class="btn btn-default pull-right" type="submit" value="Link">
+            <br>
+            <br>
+
+         </form>
+      </div>
+
+    </div>
 
     </div>
     </div>
@@ -275,6 +375,14 @@ from django.core.urlresolvers import reverse
     <script>
             $('#create-item-modal').click(function() {
                 $('#create-modal').modal('show');
+            });
+
+            $('#link-lo-modal-open').click(function() {
+                $('#link-lo-modal').modal('show');
+            });
+
+            $('#unlink-lo-modal-open').click(function() {
+                $('#unlink-lo-modal').modal('show');
             });
 
             $('#reset-weights-button').click(function() {

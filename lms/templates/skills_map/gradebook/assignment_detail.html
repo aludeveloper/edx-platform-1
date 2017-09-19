@@ -125,7 +125,7 @@ from pprint import pprint
                     <table class="table col-md-12 table-striped table-bordered">
                         <thead>
                             <th>LO</th>
-                            <th>Desc</th>
+                            <th>Description</th>
                             <th>L 1</th>
                             <th>L 2</th>
                             <th>L 3</th>
@@ -135,15 +135,15 @@ from pprint import pprint
 
                         <tbody>
 
-                            % for i, LO in enumerate(assignment.learning_outcomes.all()):
+                            % for i, lo in enumerate(assignment.learning_outcomes.all()):
                                 <tr>
-                                    <td>${LO}</td>
-                                    <td>This is the description of an LO. Who really knows anything</td>
-                                    <td>A Level 1 means this</td>
-                                    <td>A Level 2 means this</td>
-                                    <td>A Level 3 means this</td>
-                                    <td>A Level 4 means this</td>
-                                    <td>A Level 5 means this</td>
+                                    <td>${lo.name}</td>
+                                    <td>${lo.description}</td>
+                                    <td>${lo.level_one_description}</td>
+                                    <td>${lo.level_two_description}</td>
+                                    <td>${lo.level_three_description}</td>
+                                    <td>${lo.level_four_description}</td>
+                                    <td>${lo.level_five_description}</td>
                                 </tr>
                             % endfor
 
