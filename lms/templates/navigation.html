@@ -97,6 +97,13 @@ site_status_msg = get_site_status_msg(course_id)
               </a>
             </li>
           % endif
+
+          % if user.is_staff:
+            <li class="item nav-global-01">
+              <a href="${reverse('skills_map:skills-hq')}">Staff HQ</a>
+            </li>
+          % endif
+
           %if settings.FEATURES.get('ENABLE_SYSADMIN_DASHBOARD','') and user.is_staff:
             <li class="item">
               ## Translators: This is short for "System administration".
