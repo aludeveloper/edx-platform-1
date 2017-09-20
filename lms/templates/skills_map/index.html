@@ -26,10 +26,41 @@ from django.core.urlresolvers import reverse
 
     <style>
          .icon {
-        width: 200px;
-        height: 200px;
-        padding: 10px;
-    }
+            width: 200px;
+            height: 200px;
+            padding: 10px;
+        }
+
+         .empty-nav-item{
+             width: 200px;
+         }
+
+        .item-container {
+            text-align:center;
+        }
+
+        .nav-item {
+            display:inline-block;
+            margin:3% 7%;
+            padding:0.3%;
+        }
+
+        .item-icon {
+            margin-bottom: 10px;
+
+        }
+
+        .item-label{
+            color: dimgray;
+            font-size: x-large;
+            font-family: Helvetica;
+        }
+
+        h2{
+            font-family: Helvetica;
+        }
+
+
     </style>
 
     <section class="container" >
@@ -47,29 +78,58 @@ from django.core.urlresolvers import reverse
     <section class="container dashboard" id="dashboard-main">
         <div class="row">
             <div class="col-md-3">
-                <h1>Staff HQ</h1>
+                <h2>Staff HQ</h2>
 ##                 <hr style="padding:0px;height:3px;border:none;color:#eee;background-color:#eee;">
             </div>
         </div>
-        <div class="row">
-             <div class="col-md-4">
-                 <a href="${reverse("skills_map:skills-tree")}">
-                    <img class="icon" src="https://image.flaticon.com/icons/svg/184/184955.svg" alt="tree.png" />
-                     <div class="col-md-offset-2"><p>Skills Tree</p></div>
-                 </a>
-            </div>
-##             <div class="col-md-4">
-##                     <a href="${reverse("skills_map:skills-map-preview")}">
-##                         <img class="icon" src="https://image.flaticon.com/icons/svg/148/148800.svg" alt="tree.png" />
-##                         <div class="col-md-offset-2"><p>Skills Map</p></div>
-##                     </a>
-##             </div>
-            <div class="col-md-4">
-                <a href="${reverse("skills_map:gradebook")}">
-                    <img class="icon" src="https://image.flaticon.com/icons/svg/148/148988.svg" alt="tree.png" />
-                    <div class="col-md-offset-2"><p>Gradebook</p></div>
+
+
+        <div class="item-container">
+            <div class="nav-item">
+                <a href="${reverse("skills_map:skills-tree")}">
+                    <img class="icon item-icon" src="https://image.flaticon.com/icons/svg/523/523853.svg" alt="tree.png" />
+                    <p class="item-label">Skills Tree</p>
                 </a>
             </div>
+
+            <div class="nav-item">
+                <a href="${reverse("skills_map:gradebook")}">
+                    <img class="icon item-icon" src="https://www.flaticon.com/premium-icon/icons/svg/124/124802.svg" alt="tree.png" />
+                    <p class="item-label">Gradebook</p>
+                </a>
+            </div>
+
+            <div class="nav-item">
+                <a href="${reverse("skills_map:lo-bank")}">
+                    <img class="icon item-icon" src="https://image.flaticon.com/icons/svg/138/138364.svg" alt="tree.png" />
+                    <p class="item-label">LO Bank</p>
+                </a>
+            </div>
+
+        </div>
+
+        <div class="item-container">
+            <div class="nav-item">
+                <a href="${reverse("skills_map:skills-tree")}">
+                    <img class="icon item-icon" src="https://www.flaticon.com/premium-icon/icons/svg/327/327843.svg" alt="tree.png" />
+                    <p class="item-label">PCI Grouping</p>
+                </a>
+            </div>
+
+            <div class="nav-item">
+                <div>
+                    <img class="icon item-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/59/Empty.png" alt="tree.png" />
+                    <p class="item-label"></p>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <div>
+                    <img class="icon item-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/59/Empty.png" alt="tree.png" />
+                    <p class="item-label"></p>
+                </div>
+            </div>
+
         </div>
 
 
