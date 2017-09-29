@@ -90,11 +90,11 @@ from django.core.urlresolvers import reverse
                     <tr>
                         <th>LO</th>
                         <th>Description</th>
-                        <th>L 1</th>
-                        <th>L 2</th>
-                        <th>L 3</th>
-                        <th>L 4</th>
                         <th>L 5</th>
+                        <th>L 4</th>
+                        <th>L 3</th>
+                        <th>L 2</th>
+                        <th>L 1</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,20 +106,20 @@ from django.core.urlresolvers import reverse
                             <td> <a href="#" id="lo-description-${learning_outcome.get('id', 'none')}"
                                     data-value="${learning_outcome.get('description', '')}"></a> </td>
 
-                            <td> <a href="#" id="lo-l1-${learning_outcome.get('id', 'none')}"
-                                    data-value="${learning_outcome.get('l1', '')}"></a> </td>
-
-                            <td> <a href="#" id="lo-l2-${learning_outcome.get('id', 'none')}"
-                                    data-value="${learning_outcome.get('l2', '')}"></a> </td>
-
-                            <td> <a href="#" id="lo-l3-${learning_outcome.get('id', 'none')}"
-                                    data-value="${learning_outcome.get('l3', '')}"></a> </td>
+                            <td> <a href="#" id="lo-l5-${learning_outcome.get('id', 'none')}"
+                                    data-value="${learning_outcome.get('l5', '')}"></a> </td>
 
                             <td> <a href="#" id="lo-l4-${learning_outcome.get('id', 'none')}"
                                     data-value="${learning_outcome.get('l4', '')}"></a> </td>
 
-                            <td> <a href="#" id="lo-l5-${learning_outcome.get('id', 'none')}"
-                                    data-value="${learning_outcome.get('l5', '')}"></a> </td>
+                            <td> <a href="#" id="lo-l3-${learning_outcome.get('id', 'none')}"
+                                    data-value="${learning_outcome.get('l3', '')}"></a> </td>
+
+                            <td> <a href="#" id="lo-l2-${learning_outcome.get('id', 'none')}"
+                                    data-value="${learning_outcome.get('l2', '')}"></a> </td>
+
+                            <td> <a href="#" id="lo-l1-${learning_outcome.get('id', 'none')}"
+                                    data-value="${learning_outcome.get('l1', '')}"></a> </td>
 
                         </tr>
                     %endfor
