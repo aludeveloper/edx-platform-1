@@ -2452,3 +2452,30 @@ class LogoutViewConfiguration(ConfigurationModel):
     def __unicode__(self):
         """Unicode representation of the instance. """
         return u'Logout view configuration: {enabled}'.format(enabled=self.enabled)
+
+
+
+class StudentSubmissionTracker(models.Model):
+    """
+        Tracks student submission status for ORA/SGA
+    """
+    id = models.AutoField(primary_key=True)
+    course_id = models.CharField(null=True, blank=True, max_length=255)
+    block_id = models.CharField(null=True, blank=True, max_length=255)
+    block_name = models.CharField(default="Assignment Name", blank=True, max_length=255)
+    block_location = models.CharField(default="Location", blank=True, max_length=255)
+    student_id = models.ForeignKey(User)
+    SUBMISSION_TYPE = (
+        ('edx_sga', _('edx_sga')),
+        ('openassessment', _('openassessment'))
+    )
+    submission_type = models.CharField(
+                                max_length=255,
+                                choices=SUBMISSION_TYPE,
+                                blank=True,
+                                null=True
+    )
+    submission_due_date = models.DateTimeField(default=datetime.now, blank=True)
+    submission_status = models.BooleanField(default=False, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)

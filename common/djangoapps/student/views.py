@@ -63,7 +63,7 @@ from certificates.models import (  # pylint: disable=import-error
 )
 from course_modes.models import CourseMode
 from courseware.access import has_access
-from courseware.courses import get_courses, sort_by_announcement, sort_by_start_date  # pylint: disable=import-error
+from courseware.courses import get_courses, sort_by_announcement, sort_by_start_date, get_course_by_id  # pylint: disable=import-error
 from django_comment_common.models import assign_role
 from edxmako.shortcuts import render_to_response, render_to_string
 from lms.djangoapps.commerce.utils import EcommerceService  # pylint: disable=import-error
@@ -128,6 +128,8 @@ from util.db import outer_atomic
 from util.json_request import JsonResponse
 from util.milestones_helpers import get_pre_requisite_courses_not_completed
 from util.password_policy_validators import validate_password_strength
+from util.course import getAllCourseChildren
+import itertools
 from xmodule.modulestore.django import modulestore
 
 log = logging.getLogger("edx.student")
@@ -621,6 +623,136 @@ def compose_and_send_activation_email(user, profile, user_registration=None):
         message_for_activation = ("Activation for %s (%s): %s\n" % (user, user.email, profile.name) +
                                   '-' * 80 + '\n\n' + message_for_activation)
     send_activation_email.delay(subject, message_for_activation, from_address, dest_addr)
+
+
+
+@login_required
+@ensure_csrf_cookie
+def custom_dashboard(request):
+    # from student.models import user_by_anonymous_id, anonymous_id_for_user
+    # from submissions import api as submissions_api
+    # from submissions.models import StudentItem as SubmissionsStudent
+    from student.models import StudentSubmissionTracker
+
+    user = request.user
+    if not UserProfile.objects.filter(user=user).exists():
+        return redirect(reverse('account_settings'))
+
+    # Let's filter out any courses in an "org" that has been declared to be
+    # in a configuration
+    org_filter_out_set = configuration_helpers.get_all_orgs()
+
+    # Remove current site orgs from the "filter out" list, if applicable.
+    # We want to filter and only show enrollments for courses within
+    # the organizations defined in configuration for the current site.
+    course_org_filter = configuration_helpers.get_current_site_orgs()
+    if course_org_filter:
+        org_filter_out_set = org_filter_out_set - set(course_org_filter)
+
+    # Build our (course, enrollment) list for the user, but ignore any courses that no
+    # longer exist (because the course IDs have changed). Still, we don't delete those
+    # enrollments, because it could have been a data push snafu.
+    course_enrollments = list(get_course_enrollments(user, course_org_filter, org_filter_out_set))
+
+    # Record how many courses there are so that we can get a better
+    # understanding of usage patterns on prod.
+    monitoring_utils.accumulate('num_courses', len(course_enrollments))
+
+    # sort the enrollment pairs by the enrollment date
+    course_enrollments.sort(key=lambda x: x.created, reverse=True)
+
+    # TODO - COLORS
+    colors = ['red', 'green', 'blue', 'purple',
+              'red', 'green', 'blue', 'purple',
+              'red', 'green', 'blue', 'purple',
+              'red', 'green', 'blue', 'purple']
+    # import pdb;pdb.set_trace();
+    # Started Customization for Upcoming Assignments Dashboard
+    all_blocks = list()
+    upcomingCoursesList = {}
+    upcomingAssignmentListColors = {}
+    # # temp test code
+    # course_key = CourseKey.from_string('course-v1:test+t101+2017_T4')
+    # course_blocks = getAllCourseChildren(course_key, True)
+    # all_blocks = list(itertools.chain(course_blocks))
+    # # end test code
+    print "Time log start : ", datetime.datetime.now(UTC)
+    temp_color_cnt = 0
+    for enrollment in course_enrollments:
+        course_blocks = getAllCourseChildren(enrollment.course_id, True)
+        if course_blocks:
+            temp_courseid = "{}".format(enrollment.course_id)
+            upcomingCoursesList[temp_courseid] = str(enrollment.course_overview.display_name_with_default)
+            upcomingAssignmentListColors[temp_courseid] = colors[temp_color_cnt]
+            all_blocks = all_blocks + course_blocks
+            temp_color_cnt = temp_color_cnt + 1
+            if temp_color_cnt > 15:
+                temp_color_cnt=0
+    print "Time log end   : ", datetime.datetime.now(UTC)
+    # import pdb;pdb.set_trace();
+    # print all_blocks
+    # upcomingCoursesList = {
+    #     'course-v1:test+t101+2017_T4' : 'Course 1'
+    # }
+    upcomingAssignmentList = all_blocks
+    # End Customization for Upcoming Assignments Dashboard
+
+    print "Time log start : ", datetime.datetime.now(UTC)
+    studentsubmissions = ''
+    try:
+        studentsubmissions = StudentSubmissionTracker.objects.all().order_by('-updated_on')
+    except:
+        pass
+    submittedCoursesList = {}
+    submittedAssignmentListColors = {}
+    submittedAssignmentList = []
+    # import pdb;pdb.set_trace();
+    temp_color_cnt=0
+    for submission in studentsubmissions:
+        temp_course = get_course_by_id(CourseKey.from_string(submission.course_id), depth=0)
+        submittedCoursesList[submission.course_id] = getattr(temp_course, 'display_name_with_default', 'Course Name')
+        submittedAssignmentListColors[submission.course_id] = colors[temp_color_cnt]
+        submission.course_name = getattr(temp_course, 'display_name_with_default', 'Course Name')
+        submittedAssignmentList.append(submission)
+        temp_color_cnt = temp_color_cnt + 1
+        if temp_color_cnt > 15:
+            temp_color_cnt=0
+    print "Time log end   : ", datetime.datetime.now(UTC)
+
+    context = {
+        'upcomingAssignmentList': upcomingAssignmentList,
+        'upcomingCoursesList' : upcomingCoursesList,
+        'upcomingAssignmentListColors' : upcomingAssignmentListColors,
+        'submittedAssignmentListColors' : submittedAssignmentListColors,
+        'submittedAssignmentList': submittedAssignmentList,
+        'submittedCoursesList' : submittedCoursesList
+    }
+    return render_to_response('custom_dashboard.html', context)
+    
+
+# TODO : incomplete : call using ajax to save dashboard load time
+@login_required
+@ensure_csrf_cookie
+def custom_dashboard_submitted_assignment(request):
+    from student.models import StudentSubmissionTracker
+    studentsubmissions = ''
+    try:
+        studentsubmissions = StudentSubmissionTracker.objects.all().order_by('-updated_on')
+    except:
+        pass
+    submittedCoursesList = {}
+    submittedAssignmentList = []
+    for submission in studentsubmissions:
+        submittedCoursesList[submission.course_id] = submission.course_id
+        submittedAssignmentList.append(submission)
+    # import pdb;pdb.set_trace();
+    context = {
+        'submittedAssignmentList': submittedAssignmentList,
+        'submittedCoursesList' : submittedCoursesList
+    }
+    return render_to_response('custom_dashboard.html', context)
+
+
 
 
 @login_required
