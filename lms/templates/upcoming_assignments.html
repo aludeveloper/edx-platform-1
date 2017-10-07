@@ -1,0 +1,39 @@
+<%namespace name='static' file='/static_content.html'/>
+<div role="tabpanel" class="tab-pane upcomingAssignmentsTab active" id="home">
+    <div class="row">
+        <div class="col-sm-12 mobile-pull">
+            <article role="login">
+                <div class="row">
+                    <div class="col-sm-4 Coursebox">
+                        <h4>Courses</h4>
+                        <ul>
+                            % for courseId ,courseName in upcomingCoursesList.iteritems():
+                                <li><div class="${upcomingAssignmentListColors[courseId]}1"></div><div id="${courseId}">${courseName}</div></li>
+                            % endfor
+                        </ul>
+                    </div>
+                    <div class="col-sm-8">
+                        % for assignment in upcomingAssignmentList:
+                            <div class="box ${upcomingAssignmentListColors[assignment['course_id']]}">
+                                <div class="row">
+                                    <div class="col-sm-6 assignmentBlockClick" rel="/courses/${assignment['course_id']}/courseware#${assignment['block_location']}">
+                                        <h6> ${assignment['display_name']}</h6>
+                                        <p>${"".join(e[0] for e in assignment['course_name'].split())}</p>
+                                        <h6>${assignment['due'].strftime('%A, %B %y')}</h6>
+                                        <span>${assignment['due'].strftime('%H:%M')}</span>
+                                    </div><!--div-->
+                                    % if assignment['submission_status']:
+                                        <div class="col-sm-6">
+                                            <div class="upcomingsigns"><img src="${static.url('images/dashboard_img/done.jpg')}" alt="issue"></div>
+                                        </div><!--div-->
+                                    % endif
+                                </div><!--row-->
+                            </div><!--box-->
+                        % endfor
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <!-- end of row -->
+</div>

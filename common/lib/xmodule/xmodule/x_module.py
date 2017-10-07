@@ -1363,6 +1363,67 @@ class MetricsMixin(object):
                 handler_name,
                 getattr(block, 'location', ''),
             )
+            # custom code to track submission status
+            if block.category in ['edx_sga','openassessment']:
+                # import pdb;pdb.set_trace();
+                print "============"
+                print handler_name
+                print "============"
+                if self.get_user_role() == 'student' and handler_name in ['student_submit', 'submit', 'upload_assignment']:
+                    import datetime
+                    from django.utils import timezone
+                    try:
+                        from student.models import StudentSubmissionTracker
+                    except ImportError:
+                        StudentSubmissionTracker = None
+                    try:
+                        from django.contrib.auth.models import User
+                    except ImportError:
+                        User = None
+
+                    s_courseid = "{}".format(course_id)
+                    s_blockid = getattr(block, 'url_name','')
+                    s_blockname = getattr(block, 'display_name','')
+                    s_blocklocation = getattr(block, 'location', '')
+                    s_studentid = getattr(self, 'user_id', '')
+                    s_submissiontype = block.category
+                    # TODO insert correct DueDate
+                    if block.category == 'edx_sga':
+                        s_submissiondue = getattr(block, 'due',datetime.datetime.now(timezone.utc))
+                    else:
+                        s_submissiondue = getattr(block, 'due',datetime.datetime.now(timezone.utc))
+                    try:
+                        s_studentobj = User.objects.get(id=s_studentid)
+                    except User.DoesNotExist:
+                        log.exception("StudentSubmissionTracker: User does not found - database error")
+
+                    try:
+                        studentsubmissiontracker = StudentSubmissionTracker.objects.get(
+                                                                    course_id=s_courseid,
+                                                                    block_id=s_blockid,
+                                                                    student_id=s_studentobj
+                                                )
+                    except StudentSubmissionTracker.DoesNotExist:
+                        studentsubmissiontracker = None
+
+                    if not studentsubmissiontracker:
+                        try:
+                            studentsubmissiontracker = StudentSubmissionTracker.objects.create(
+                                                                        course_id=s_courseid,
+                                                                        block_id=s_blockid,
+                                                                        block_name=s_blockname,
+                                                                        block_location=s_blocklocation,
+                                                                        student_id=s_studentobj,
+                                                                        submission_type=s_submissiontype,
+                                                                        submission_due_date=s_submissiondue,
+                                                                        submission_status=True
+                                                    )
+                        except:
+                            log.exception("StudentSubmissionTracker : database error")
+                    else:
+                        studentsubmissiontracker.submission_status = True
+                        studentsubmissiontracker.save()
+            # end custom code
 
 
 class DescriptorSystem(MetricsMixin, ConfigurableFragmentWrapper, Runtime):

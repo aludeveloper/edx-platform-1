@@ -1,0 +1,34 @@
+<div role="tabpanel" class="tab-pane submittedAssignmentsTab" id="profile">
+    <div class="row">
+        <div class="col-sm-12 mobile-pull">
+            <article role="login">
+                <div class="row">
+                    <div class="col-sm-4 Coursebox">
+                        <h4>Courses</h4>
+                        <ul>
+                            % for courseId ,courseName in submittedCoursesList.iteritems():
+                                <li><div class="red1"></div><div id="${courseId}">${courseName}</div></li>
+                            % endfor
+                        </ul>
+                    </div>
+                    <div class="col-sm-8">
+                        % for assignment in submittedAssignmentList:
+                            <div class="box red">
+                                <div class="row">
+                                    <div class="col-sm-6 assignmentBlockClick" rel="/courses/${assignment.course_id}/courseware#${assignment.block_location}">
+                                        <h6>${assignment.block_name}</h6> 
+                                        <p>${"".join(e[0] for e in assignment.course_name.split())}</p>
+                                    </div><!--div-->
+                                    <div class="col-sm-6">
+                                        <div class="view"><a href="#">View Feedback</a></div>
+                                    </div><!--div-->
+                                </div><!--row-->
+                            </div><!--box-->
+                        % endfor
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <!-- end of row -->
+</div>

@@ -1,0 +1,64 @@
+## mako
+
+<%page expression_filter="h"/>
+
+<%! import json %>
+<%!
+from django.utils.translation import ugettext as _
+from openedx.core.djangolib.js_utils import (
+    dump_js_escaped_json, js_escaped_string
+)
+%>
+<%namespace name='static' file='/static_content.html'/>
+<%inherit file="/main.html" />
+<link href="${static.url('css/bootstrap.css')}" rel="stylesheet">
+<link href="${static.url('css/custom_dashboard.css')}" rel="stylesheet">
+<div class="container custom-dashbaord">
+    <div class="login-signup">
+        <div class="row">
+            <div class="col-sm-12 nav-tab-holder">
+                <ul class="nav nav-tabs row" role="tablist">
+                    <li role="presentation" class="active col-sm-6 upcomingAssignmentsTabClick"><a href="javascript:void(0);" aria-controls="home" role="tab" data-toggle="tab">Upcoming Assignment</a></li>
+                    <li role="presentation" class="non-active col-sm-6 submittedAssignmentsTabClick"><a href="javascript:void(0);" aria-controls="profile" role="tab" data-toggle="tab">Submitted Assignment</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <%include file='upcoming_assignments.html'/>
+            <!-- end of home -->
+            <%include file='submitted_assignments.html' />
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.upcomingAssignmentsTabClick').on('click', function(){
+            console.log("upcomingAssignmentsTabClick");
+            var _this = $(this);
+            _this.removeClass('non-active').addClass('active');
+            $('.submittedAssignmentsTabClick').removeClass('active').addClass('non-active');
+
+            $('.submittedAssignmentsTab').removeClass('active');
+            $('.upcomingAssignmentsTab').addClass('active');
+        });
+
+
+        $('.submittedAssignmentsTabClick').on('click', function(){
+            console.log("submittedAssignmentsTabClick");
+            var _this = $(this);
+            _this.removeClass('non-active').addClass('active');
+            $('.upcomingAssignmentsTabClick').removeClass('active').addClass('non-active');
+
+            $('.upcomingAssignmentsTab').removeClass('active');
+            $('.submittedAssignmentsTab').addClass('active');
+        });
+
+        $('.assignmentBlockClick').on('click', function(){
+            console.log('assignmentBlockClick');
+            var _this = $(this);
+            location.href = _this.attr('rel');
+        });
+    })
+</script>
