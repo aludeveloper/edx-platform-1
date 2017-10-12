@@ -107,6 +107,9 @@ urlpatterns = (
     # URLs for Staff HQ
     url(r'^staff-hq/', include('lms.djangoapps.alux_skills_map.urls', namespace="skills_map")),
 
+    # URLs for PCI tool
+    url(r'^pci/', include('lms.djangoapps.pcitool.urls', namespace="pcitool")),
+
 )
 
 urlpatterns += (

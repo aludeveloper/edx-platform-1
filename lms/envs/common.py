@@ -2679,6 +2679,9 @@ OPTIONAL_APPS = (
 
     # ALUx Staff HQ application
     'alux_skills_map',
+
+    # ALUx PCI tool application
+    'pcitool',
 )
 
 for app_name in OPTIONAL_APPS:
