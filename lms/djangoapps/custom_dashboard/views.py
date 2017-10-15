@@ -31,7 +31,7 @@ def custom_dashboard(request):
     # upcoming_assginments = upcoming_assginments(request)
 
     submittedCoursesList = {}
-    submittedAssignmentListColors = []
+    submittedAssignmentListColors = {}
 
     temp_color_cnt = 0
     for assignmentsData in submittedAssignments:
