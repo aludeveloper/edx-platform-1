@@ -42,19 +42,17 @@ from openedx.core.djangolib.js_utils import (
                                 </div>
                                 <div class="col-sm-8">
                                     % for assignmentData in submitted_assignments:
-                                        % for assignment in assignmentData.assignment_set.all():
-                                            <div class="box ${submittedAssignmentListColors[assignment.course_id]}">
-                                                <div class="row">
-                                                    <div class="col-sm-6 assignmentBlockClick" rel="${reverse('skills_map:assignment-detail', kwargs={'usage_id': str(assignment.assignment_id)})}">
-                                                        <h6>${assignment.name[assignment.name.index('('):assignment.name.index(')')]}</h6> 
-                                                        <p>${"".join(e[0] for e in submittedCoursesList[assignment.course_id].split())}</p>
-                                                    </div><!--div-->
-                                                    <div class="col-sm-6">
-                                                        <div class="view"><a href="javascript:void(0)">View Feedback</a></div>
-                                                    </div><!--div-->
-                                                </div><!--row-->
-                                            </div><!--box-->
-                                        % endfor
+                                        <div class="box ${submittedAssignmentListColors[assignmentsData.assignment.course_id]}">
+                                            <div class="row">
+                                                <div class="col-sm-6 assignmentBlockClick" rel="${reverse('skills_map:assignment-detail', kwargs={'usage_id': str(assignmentsData.assignment.id)})}">
+                                                    <h6>${assignmentsData.assignment.name[assignmentsData.assignment.name.index('('):assignmentsData.assignment.name.index(')')]}</h6> 
+                                                    <p>${"".join(e[0] for e in submittedCoursesList[assignmentsData.assignment.course_id].split())}</p>
+                                                </div><!--div-->
+                                                <div class="col-sm-6">
+                                                    <div class="view"><a href="javascript:void(0)">View Feedback</a></div>
+                                                </div><!--div-->
+                                            </div><!--row-->
+                                        </div><!--box-->
                                     % endfor
                                 </div>
                             </div>
