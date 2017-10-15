@@ -1,0 +1,36 @@
+<div role="tabpanel" class="tab-pane submittedAssignmentsTab" id="profile">
+    <div class="row">
+        <div class="col-sm-12 mobile-pull">
+            <article role="login">
+                <div class="row">
+                    <div class="col-sm-4 Coursebox">
+                        <h4>Courses</h4>
+                        <ul>
+                            % for courseId ,courseName in submittedCoursesList.iteritems():
+                                <li><div class="${submittedAssignmentListColors[courseId]}1"></div><div id="${courseId}">${courseName}</div></li>
+                            % endfor
+                        </ul>
+                    </div>
+                    <div class="col-sm-8">
+                        % for assignmentData in submitted_assignments:
+                            % for assignment in assignmentData.assignment_set.all():
+                                <div class="box ${submittedAssignmentListColors[assignment.course_id]}">
+                                    <div class="row">
+                                        <div class="col-sm-6 assignmentBlockClick" rel="${reverse('skills_map:assignment-detail', kwargs={'usage_id': str(assignment.assignment_id)})}">
+                                            <h6>${assignment.name[assignment.name.index('('):assignment.name.index(')')]}</h6> 
+                                            <p>${"".join(e[0] for e in submittedCoursesList[assignment.course_id].split())}</p>
+                                        </div><!--div-->
+                                        <div class="col-sm-6">
+                                            <div class="view"><a href="#">View Feedback</a></div>
+                                        </div><!--div-->
+                                    </div><!--row-->
+                                </div><!--box-->
+                            % endfor
+                        % endfor
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    <!-- end of row -->
+</div>
