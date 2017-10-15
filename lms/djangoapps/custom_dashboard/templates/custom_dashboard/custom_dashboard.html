@@ -15,6 +15,8 @@ from openedx.core.djangolib.js_utils import (
 
 <%!
 from django.core.urlresolvers import reverse
+from opaque_keys.edx.keys import CourseKey, UsageKey
+from courseware.url_helpers import get_redirect_url
 %>
 
 <link href="${static.url('css/bootstrap.css')}" rel="stylesheet">
@@ -50,8 +52,12 @@ from django.core.urlresolvers import reverse
                                     % for assignmentsData in submitted_assignments:
                                         <div class="box ${submittedAssignmentListColors[assignmentsData.assignment.course_id]}">
                                             <div class="row">
-                                                <div class="col-sm-6 assignmentBlockClick" rel="${reverse('skills_map:assignment-detail', kwargs={'usage_id': str(assignmentsData.assignment.assignment_id)})}">
-                                                    <h6>${assignmentsData.assignment.name[assignmentsData.assignment.name.index('('):assignmentsData.assignment.name.index(')')]}</h6> 
+                                                <%
+                                                    temp_usage_key = UsageKey.from_string(assignmentsData.assignment.assignment_id)
+                                                    temp_course_key = CourseKey.from_string(assignmentsData.assignment.course_id)
+                                                %>
+                                                <div class="col-sm-6 assignmentBlockClick" rel="get_redirect_url(temp_course_key, temp_usage_key)">
+                                                    <h6>${assignmentsData.assignment.name[assignmentsData.assignment.name.index('(')+1:assignmentsData.assignment.name.index(')')]}</h6> 
                                                     <p>${"".join(e[0] for e in submittedCoursesList[assignmentsData.assignment.course_id].split())}</p>
                                                 </div><!--div-->
                                                 <div class="col-sm-6">
