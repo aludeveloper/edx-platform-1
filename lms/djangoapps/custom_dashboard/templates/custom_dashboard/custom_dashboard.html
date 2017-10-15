@@ -44,7 +44,7 @@ from openedx.core.djangolib.js_utils import (
                                     % for assignmentsData in submitted_assignments:
                                         <div class="box ${submittedAssignmentListColors[assignmentsData.assignment.course_id]}">
                                             <div class="row">
-                                                <div class="col-sm-6 assignmentBlockClick" rel="${reverse('skills_map:assignment-detail', kwargs={'usage_id': str(assignmentsData.assignment.id)})}">
+                                                <div class="col-sm-6 assignmentBlockClick" rel="${reverse('skills_map:assignment-detail', kwargs={'usage_id': str(assignmentsData.assignment.assignment_id)})}">
                                                     <h6>${assignmentsData.assignment.name[assignmentsData.assignment.name.index('('):assignmentsData.assignment.name.index(')')]}</h6> 
                                                     <p>${"".join(e[0] for e in submittedCoursesList[assignmentsData.assignment.course_id].split())}</p>
                                                 </div><!--div-->
