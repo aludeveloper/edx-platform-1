@@ -30,24 +30,24 @@ def custom_dashboard(request):
     submittedAssignments = submitted_assignments(request)
     # upcoming_assginments = upcoming_assginments(request)
 
-    submittedCoursesList = None
+    submittedCoursesList = {}
     submittedAssignmentListColors = []
 
     temp_color_cnt = 0
     for assignmentsData in submittedAssignments:
-        for assignment in assignmentsData.assignment_set.all():
-            temp_course = get_course_by_id(
-                            CourseKey.from_string(assignment.course_id),
-                            depth=0
-                          )
-            submittedCoursesList[assignment.course_id] = getattr(temp_course,
-                                                        'display_name_with_default',
-                                                        'Course Name'
-                                                        )
-            submittedAssignmentListColors[assignment.course_id] = colors[temp_color_cnt]
-            temp_color_cnt = temp_color_cnt + 1
-            if temp_color_cnt > 14:
-                temp_color_cnt = 0
+        assignment = assignmentsData.assignment
+        temp_course = get_course_by_id(
+                        CourseKey.from_string(assignment.course_id),
+                        depth=0
+                      )
+        submittedCoursesList[assignment.course_id] = getattr(temp_course,
+                                                    'display_name_with_default',
+                                                    'Course Name'
+                                                    )
+        submittedAssignmentListColors[assignment.course_id] = colors[temp_color_cnt]
+        temp_color_cnt = temp_color_cnt + 1
+        if temp_color_cnt > 14:
+            temp_color_cnt = 0
 
 
 

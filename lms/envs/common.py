@@ -2679,6 +2679,8 @@ OPTIONAL_APPS = (
 
     # ALUx Staff HQ application
     'alux_skills_map',
+    # ALUx Student Custom Dashboard app
+    'custom_dashboard',
 )
 
 for app_name in OPTIONAL_APPS:
