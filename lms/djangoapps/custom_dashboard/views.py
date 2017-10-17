@@ -68,7 +68,7 @@ def submitted_assignments(request):
     print "Submitted Assignments"
     scoredassignments = None
     try:
-        scoredassignments = ScoredAssignment.objects.all().filter(published=True)
+        scoredassignments = ScoredAssignment.objects.all().filter(published=True, user=request.user)
     except:
         log.info(
             u"No assignmets has been scores has been submitted for student %s",
