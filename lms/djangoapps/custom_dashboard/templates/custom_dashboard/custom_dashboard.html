@@ -61,7 +61,9 @@ from courseware.url_helpers import get_redirect_url
                                                     <p>${"".join(e[0] for e in submittedCoursesList[assignmentsData.assignment.course_id].split())}</p>
                                                 </div><!--div-->
                                                 <div class="col-sm-6">
-                                                    <div class="view"><a href="javascript:void(0)">View Feedback</a></div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)" class="viewFeedback" data-assignmentid="${assignmentsData.assignment.id}">View Feedback</a>
+                                                    </div>
                                                 </div><!--div-->
                                             </div><!--row-->
                                         </div><!--box-->
@@ -75,8 +77,156 @@ from courseware.url_helpers import get_redirect_url
             </div>
         </div>
     </div>
-</div>
+    <div id="feeback_modal" class="modal feeback_modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
 
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5>Assignment Name</h5>
+                                <h5>Course Name</h5>
+                                <h5>Due Date and Time</h5>
+
+                                <hr>
+
+                                <h6>Overall Feedback and Grade</h6>
+                                <p>9/15</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
+                            </div><!--col-md-12 ends here-->
+
+                        </div><!--row ends here-->
+                    </div><!--container-fluid ends here-->
+                </div>
+
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="learningcell">Learning Outcome</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th style="text-align: center;">Level</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>1 - Beginning</th>
+                                    <th>2 - Developing</th>
+                                    <th>3 - Approching</th>
+                                    <th>4 - Proficient</th>
+                                    <th>5 - Exemplary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-toggle="collapse" data-target=".order1">
+                                    <td class="learningcell">Defining the problem: I can understand and contextualize a problem</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                </tr>
+
+                                <tr class="collapse order1">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            
+                                <tr data-toggle="collapse" data-target=".order2">
+                                    <td class="learningcell">Learning outcome Description</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                </tr>
+
+                                <tr class="collapse order2">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td></td>
+                                </tr>
+
+
+                                <tr data-toggle="collapse" data-target=".order3">
+                                    <td class="learningcell">Learning outcome Description</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
+                                </tr>
+
+                                <tr class="collapse order3">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                </tr>
+
+
+                                <tr data-toggle="collapse" data-target=".order4">
+                                    <td class="learningcell">Learning outcome Description</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                </tr>
+
+
+                                <tr class="collapse order4">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>               
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+
+
+                                <tr data-toggle="collapse" data-target=".order5">
+                                    <td class="learningcell">Learning outcome Description</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                </tr>
+
+                                <tr class="collapse order5">
+                                    <td></td>
+                                    <td></td>
+                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${static.url('js/bootstrap.min.js')}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         // $('.upcomingAssignmentsTabClick').on('click', function(){
@@ -99,6 +249,37 @@ from courseware.url_helpers import get_redirect_url
             console.log('assignmentBlockClick');
             var _this = $(this);
             location.href = _this.attr('rel');
+        });
+
+        $('.viewFeedback').on('click', function(e){
+            e.preventDefault();
+            var _this = $(this)
+            console.log(_this.data('assignmentid'), "=assignemntid");
+            var assignmentid = _this.data('assignmentid');
+            if (!isNaN(assignmentid)){
+                $.ajax({
+                    url : '/studentfeedback',
+                    method : 'POST',
+                    headers: {
+                      'X-CSRFToken': $.cookie('csrftoken')
+                    },
+                    dataType: 'json',
+                    data : {
+                        'assignmentid': assignmentid
+                    },
+                    // beforeSend:function(){
+                    //     $('.loader-overlay').removeClass('dnone');
+                    // },
+                    success : function(response){
+                        // $('.loader-overlay').addClass('dnone');
+                        console.log(response,'===responsesuccss====');
+                        
+                    },
+                    error : function(response){
+                        console.log(response,'===responseerror====');
+                    }
+                });
+            }
         });
     })
 </script>

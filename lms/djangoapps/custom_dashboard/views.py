@@ -10,6 +10,8 @@ from alux_skills_map.models import (
     )
 from opaque_keys.edx.keys import CourseKey
 from courseware.courses import get_course_by_id
+from django.http import HttpResponse
+import json
 # Create your views here.
 log = logging.getLogger(__name__)
 
@@ -79,8 +81,6 @@ def submitted_assignments(request):
     # }
     return scoredassignments
 
-
-
 @login_required
 def upcoming_assginments(request):
     """
@@ -89,3 +89,54 @@ def upcoming_assginments(request):
     print "Upcoming Assignments"
     upcomingassginments = None
     return upcomingassginments
+
+
+@login_required
+def get_feedback(request):
+    """
+        Function returns specific student feedback details for an assignment
+    """
+    if request.method == "POST":
+        assignment_id = request.POST.get('assignmentid', 0)
+        student_id = request.user
+        assignment_lo_rubric = []
+        assignmentsData = {}
+        try:
+            assignment = Assignment.objects.all().filter(id=assignment_id)
+            if assignment:
+                scoredassignment = ScoredAssignment.objects.all().filter(assignment=assignment[0],
+                                                                        user=student_id)
+                assignmentsData['course_name'] = CourseKey.from_string(assignment[0].course_id)
+                assignmentsData['assignment_name'] = assignment[0].name[assignment[0].name.index('(')+1:assignment[0].name.index(')')]
+
+                if scoredassignment:
+                    assignmentsData['overall_feedback'] = scoredassignment[0].comments
+                    assignmentsData['overall_score'] = scoredassignment[0].score
+
+                    scoredlearningoutcomes = ScoredLearningOutcome.objects.all().filter(scored_assignment=scoredassignment[0])
+                    for slc in scoredlearningoutcomes:
+                        learning_outcome = slc.learning_outcome
+                        learningoutcometable = {
+                            'lc_level_zero_description' : '',
+                            'lc_level_one_description': learning_outcome.level_one_description,
+                            'lc_level_two_description' : learning_outcome.level_two_description,
+                            'lc_level_three_description' : learning_outcome.level_three_description,
+                            'lc_level_four_description' : learning_outcome.level_four_description,
+                            'lc_level_five_description' : learning_outcome.level_five_description,
+                            'lc_description': learning_outcome.description,
+                            'slc_score' : int(slc.score),
+                            'slc_comment' : slc.comments
+                        }
+                        assignment_lo_rubric.append(learningoutcometable)
+                    content = json.dumps({'assignment_lo_rubric':assignment_lo_rubric,
+                                          'assignmentsData':assignmentsData
+                                        })
+                    return HttpResponse(content, content_type="application/json",
+                                    status=200)
+
+        except:
+            return HttpResponse(status=400)
+        return HttpResponse(status=400)
+        
+    else:
+        return HttpResponse(status=400)

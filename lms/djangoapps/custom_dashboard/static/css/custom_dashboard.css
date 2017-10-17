@@ -212,6 +212,24 @@ li[aria-expanded="true"]{
     border:1px solid #686 !important; 
 }
 
+
+.feeback_modal thead {
+    background-color: #e9d0ff !important;
+}
+.feeback_modal tr.collapse.in {
+    display:table-row;
+}
+.feeback_modal .learningcell {
+    width:25%; text-align: center; background-color: #bba7cd;
+}
+.feeback_modal .table td, .feeback_modal .table th {
+    vertical-align: center !important;
+}
+.feeback_modal hr {
+    border-top: 1px solid rgb(164, 61, 254);
+}
+
+
 @media only screen and (max-width: 767px) {
   .mobile-pull {
     float: none;
