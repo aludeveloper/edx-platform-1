@@ -290,8 +290,7 @@ from courseware.url_helpers import get_redirect_url
                     // },
                     success : function(response){
                         // $('.loader-overlay').addClass('dnone');
-                        console.log(response,'===responsesuccss====');
-                        console.log(response.assignment_lo_rubric,'=====', response['assignment_lo_rubric'])
+                        // console.log(response,'===responsesuccss====');
                         var feedbackComments_html = '\
                                                         <h6>Learning Outcome Comments:</h6>\
                                                         <hr>\
@@ -332,6 +331,7 @@ from courseware.url_helpers import get_redirect_url
                             $('.feeback_modal_header').html(feedbackHeader_html);
                             $('.feeback_modal_table_body').html(rubric_html);
                             $('.feeback_modal_comments').html(feedbackComments_html);
+                            $('#feeback_modal').modal('show');
                         }
                         
                     },
