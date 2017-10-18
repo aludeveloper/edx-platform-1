@@ -304,16 +304,16 @@ from courseware.url_helpers import get_redirect_url
                                     <tr data-toggle="collapse" data-target=".order1">\
                                         <td class="learningcell">'+learingOutcome['lc_description']+'</td>\
                                         <td></td>\
-                                        <td>'+learingOutcome["lc_level_one_description"]+'</td>\
-                                        <td>'+learingOutcome["lc_level_two_description"]+'</td>\
-                                        <td>'+learingOutcome["lc_level_three_description"]+'</td>\
-                                        <td>'+learingOutcome["lc_level_four_description"]+'</td>\
-                                        <td>'+learingOutcome["lc_level_five_description"]+'</td>\
+                                        <td>'+learingOutcome.lc_level_one_description+'</td>\
+                                        <td>'+learingOutcome.lc_level_two_description+'</td>\
+                                        <td>'+learingOutcome.lc_level_three_description+'</td>\
+                                        <td>'+learingOutcome.lc_level_four_description+'</td>\
+                                        <td>'+learingOutcome.lc_level_five_description+'</td>\
                                     </tr>\
                                 '
                                 feedbackComments_html += '\
-                                                            <p>'+learingOutcome["lc_description"]+'</p>\
-                                                            <p>'+learingOutcome["slc_comment"]+'</p>\
+                                                            <p>'+learingOutcome.lc_description+'</p>\
+                                                            <p>'+learingOutcome.slc_comment+'</p>\
                                                         '
                             }
                             var feedbackHeader_html = '\
