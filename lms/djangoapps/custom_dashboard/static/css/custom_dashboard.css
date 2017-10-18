@@ -247,7 +247,7 @@ li[aria-expanded="true"]{
 .feeback_modal hr {
     border-top: 1px solid rgb(56,172,117);
 }
-.feeback_modal .extra_0, .extra_1, .extra_2,.extra_3,.extra_4,.extra_5 {
+.feeback_modal .extra {
     background-color:#D6EEE2;
 }
 .feeback_modal .table-bordered td.readmore {
