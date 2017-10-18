@@ -43,14 +43,14 @@ from courseware.url_helpers import get_redirect_url
                                     <ul>
                                         % if submittedCoursesList:
                                             % for courseId ,courseName in submittedCoursesList.iteritems():
-                                                <li><div class="${submittedAssignmentListColors[courseId]}1"></div><div id="${courseId}">${courseName}</div></li>
+                                                <li><div style="background-color:${submittedAssignmentListColors[courseId]};" class="red1"></div><div id="${courseId}">${courseName}</div></li>
                                             % endfor
                                         % endif
                                     </ul>
                                 </div>
                                 <div class="col-sm-8">
                                     % for assignmentsData in submitted_assignments:
-                                        <div class="box ${submittedAssignmentListColors[assignmentsData.assignment.course_id]}">
+                                        <div class="box" style="border-left:10px solid ${submittedAssignmentListColors[assignmentsData.assignment.course_id]};">
                                             <div class="row">
                                                 <%
                                                     temp_usage_key = UsageKey.from_string(assignmentsData.assignment.assignment_id)
@@ -84,20 +84,6 @@ from courseware.url_helpers import get_redirect_url
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div class="container-fluid feeback_modal_header">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h5>Assignment Name</h5>
-                                <h5>Course Name</h5>
-                                <h5>Due Date and Time</h5>
-
-                                <hr>
-
-                                <h6>Overall Feedback and Grade</h6>
-                                <p>9/15</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
-                            </div><!--col-md-12 ends here-->
-
-                        </div><!--row ends here-->
                     </div><!--container-fluid ends here-->
                 </div>
 
@@ -127,115 +113,12 @@ from courseware.url_helpers import get_redirect_url
                                 </tr>
                             </thead>
                             <tbody class="feeback_modal_table_body">
-                                <tr data-toggle="collapse" data-target=".order1">
-                                    <td class="learningcell">Defining the problem: I can understand and contextualize a problem</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                </tr>
-
-                                <tr class="collapse order1">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            
-                                <tr data-toggle="collapse" data-target=".order2">
-                                    <td class="learningcell">Learning outcome Description</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                </tr>
-
-                                <tr class="collapse order2">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td></td>
-                                </tr>
-
-
-                                <tr data-toggle="collapse" data-target=".order3">
-                                    <td class="learningcell">Learning outcome Description</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
-                                </tr>
-
-                                <tr class="collapse order3">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                </tr>
-
-
-                                <tr data-toggle="collapse" data-target=".order4">
-                                    <td class="learningcell">Learning outcome Description</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                </tr>
-
-
-                                <tr class="collapse order4">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>               
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-
-
-
-                                <tr data-toggle="collapse" data-target=".order5">
-                                    <td class="learningcell">Learning outcome Description</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  <em>(Read More +)</em></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                </tr>
-
-                                <tr class="collapse order5">
-                                    <td></td>
-                                    <td></td>
-                                    <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12 feeback_modal_comments">
-                                <h6>Learning Outcome Comments:</h6>
-                                <hr>
-                                <p>Learning Outcome Description</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
-                                <hr>
-                                <p>Learning Outcome Description</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
-                                <hr>
-                                <p>Learning Outcome Description</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
                             </div>
                         </div>
                     </div>
@@ -323,11 +206,13 @@ from courseware.url_helpers import get_redirect_url
                                         <td class="'+lo_score_5+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_five_description+'</td>\
                                     </tr>\
                                 '
-                                feedbackComments_html += '\
-                                                            <p>'+response.assignment_lo_rubric[learingOutcome].lc_description+'</p>\
-                                                            <p>'+response.assignment_lo_rubric[learingOutcome].slc_comment+'</p>\
-                                                            <hr>\
-                                                        '
+                                if (response.assignment_lo_rubric[learingOutcome].slc_comment != null && response.assignment_lo_rubric[learingOutcome].slc_comment.length > 0){
+                                    feedbackComments_html += '\
+                                                                <p>'+response.assignment_lo_rubric[learingOutcome].lc_description+'</p>\
+                                                                <p>'+response.assignment_lo_rubric[learingOutcome].slc_comment+'</p>\
+                                                                <hr>\
+                                                            '
+                                }
                             }
                             var feedbackHeader_html = '\
                                                         <div class="row">\

@@ -24,10 +24,12 @@ def custom_dashboard(request):
     print "Custom Dashboard called"
     submittedAssignments = None
     # TODO - COLORS
-    colors = [ 'red', 'green', 'blue', 'purple',
-               'red', 'green', 'blue', 'purple',
-               'red', 'green', 'blue', 'purple',
-               'red', 'green', 'blue', 'purple']
+    colors = [ '#CA0022', '#DC3C0C', '#EB6900', '#E7AB18',
+               '#E9DF34', '#E2F68F', '#8CCC44', '#1DAA3A',
+               '#30650C', '#108850', '#2AC5C0', '#8DC8E4',
+               '#328FE1', '#283070', '#590095', '#A037E7',
+               '#A20089', '#DE52BC', '#753407', '#890001',
+               '#F68E69', '#137E7A', '#F99AB9', '#000000' ]
 
     submittedAssignments = submitted_assignments(request)
     # upcoming_assginments = upcoming_assginments(request)
@@ -46,10 +48,8 @@ def custom_dashboard(request):
                                                     'display_name_with_default',
                                                     'Course Name'
                                                     )
-        submittedAssignmentListColors[assignment.course_id] = colors[int(temp_color_cnt)]
+        submittedAssignmentListColors[assignment.course_id] = colors[int(temp_color_cnt % 24)]
         temp_color_cnt = int(temp_color_cnt) + 1
-        if temp_color_cnt > 14:
-            temp_color_cnt = 0
 
     context = {
         'submitted_assignments': submittedAssignments,
@@ -70,7 +70,7 @@ def submitted_assignments(request):
     print "Submitted Assignments"
     scoredassignments = None
     try:
-        scoredassignments = ScoredAssignment.objects.all().filter(published=True, user=request.user)
+        scoredassignments = ScoredAssignment.objects.all().filter(published=True, user=request.user).order_by('-updated')
     except:
         log.info(
             u"No assignmets has been scores has been submitted for student %s",
