@@ -179,9 +179,9 @@ from courseware.url_helpers import get_redirect_url
                                                         <hr>\
                                                     '
                         var rubric_html = ''
-                        var lo_score_0, lo_score_1, lo_score_2, lo_score_3, lo_score_4, lo_score_5 = ''
                         if (response.assignment_lo_rubric.length > 0){
                             for (learingOutcome in response.assignment_lo_rubric){
+                                var lo_score_0, lo_score_1, lo_score_2, lo_score_3, lo_score_4, lo_score_5 = ""
                                 if(response.assignment_lo_rubric[learingOutcome].slc_score == 1){
                                     lo_score_1 = 'extra';
                                 }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 2){
