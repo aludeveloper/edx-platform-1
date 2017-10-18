@@ -83,7 +83,7 @@ from courseware.url_helpers import get_redirect_url
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <div class="container-fluid">
+                    <div class="container-fluid feeback_modal_header">
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Assignment Name</h5>
@@ -109,6 +109,7 @@ from courseware.url_helpers import get_redirect_url
                                     <th class="learningcell">Learning Outcome</th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th style="text-align: center;">Level</th>
                                     <th></th>
                                     <th></th>
@@ -117,6 +118,7 @@ from courseware.url_helpers import get_redirect_url
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th>0</th>
                                     <th>1 - Beginning</th>
                                     <th>2 - Developing</th>
                                     <th>3 - Approching</th>
@@ -124,7 +126,7 @@ from courseware.url_helpers import get_redirect_url
                                     <th>5 - Exemplary</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="feeback_modal_table_body">
                                 <tr data-toggle="collapse" data-target=".order1">
                                     <td class="learningcell">Defining the problem: I can understand and contextualize a problem</td>
                                     <td>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</td>
@@ -221,6 +223,22 @@ from courseware.url_helpers import get_redirect_url
                             </tbody>
                         </table>
                     </div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 feeback_modal_comments">
+                                <h6>Learning Outcome Comments:</h6>
+                                <hr>
+                                <p>Learning Outcome Description</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
+                                <hr>
+                                <p>Learning Outcome Description</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
+                                <hr>
+                                <p>Learning Outcome Description</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi nibh, efficitur at pulvinar in, pulvinar quis dui. Vivamus porttitor luctus purus non sodales. Donec ac mi id purus iaculis ultrices.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -273,6 +291,47 @@ from courseware.url_helpers import get_redirect_url
                     success : function(response){
                         // $('.loader-overlay').addClass('dnone');
                         console.log(response,'===responsesuccss====');
+                        console.log(response.assignment_lo_rubric,'=====', response['assignment_lo_rubric'])
+                        var feedbackComments_html = '\
+                                                        <h6>Learning Outcome Comments:</h6>\
+                                                        <hr>\
+                                                    '
+                        var rubric_html = ''
+
+                        if (response.assignment_lo_rubric.length > 0){
+                            for (learingOutcome in response.assignment_lo_rubric){
+                                rubric_html += '\
+                                    <tr data-toggle="collapse" data-target=".order1">\
+                                        <td class="learningcell">'+learingOutcome['lc_description']+'</td>\
+                                        <td></td>\
+                                        <td>'+learingOutcome["lc_level_one_description"]+'</td>\
+                                        <td>'+learingOutcome["lc_level_two_description"]+'</td>\
+                                        <td>'+learingOutcome["lc_level_three_description"]+'</td>\
+                                        <td>'+learingOutcome["lc_level_four_description"]+'</td>\
+                                        <td>'+learingOutcome["lc_level_five_description"]+'</td>\
+                                    </tr>\
+                                '
+                                feedbackComments_html += '\
+                                                            <p>'+learingOutcome["lc_description"]+'</p>\
+                                                            <p>'+learingOutcome["slc_comment"]+'</p>\
+                                                        '
+                            }
+                            var feedbackHeader_html = '\
+                                                        <div class="row">\
+                                                            <div class="col-md-12">\
+                                                                <h5>'+response.assignmentsData.assignment_name+'</h5>\
+                                                                <h5>'+response.assignmentsData.course_name+'</h5>\
+                                                                <hr>\
+                                                                <h6>Overall Feedback and Grade</h6>\
+                                                                <p>'+response.assignmentsData.overall_feedback+'</p>\
+                                                            </div>\
+                                                        </div>\
+                                                    '
+                            
+                            $('.feeback_modal_header').html(feedbackHeader_html);
+                            $('.feeback_modal_table_body').html(rubric_html);
+                            $('.feeback_modal_comments').html(feedbackComments_html);
+                        }
                         
                     },
                     error : function(response){
