@@ -251,7 +251,8 @@ li[aria-expanded="true"]{
     /* overflow-y: auto; */
 }
 .modal-dialog {
-    width: 600px;
+    width: 1200px;
+    margin-left: 4%; 
     margin: 0px auto !important;
 }
 
