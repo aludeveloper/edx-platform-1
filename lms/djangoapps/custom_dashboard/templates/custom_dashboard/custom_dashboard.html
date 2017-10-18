@@ -181,31 +181,15 @@ from courseware.url_helpers import get_redirect_url
                         var rubric_html = ''
                         if (response.assignment_lo_rubric.length > 0){
                             for (learingOutcome in response.assignment_lo_rubric){
-                                var lo_score_0, lo_score_1, lo_score_2, lo_score_3, lo_score_4, lo_score_5 = ""
-                                if(response.assignment_lo_rubric[learingOutcome].slc_score == 1){
-                                    lo_score_1 = 'extra';
-                                }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 2){
-                                    lo_score_2 = 'extra';
-                                }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 3){
-                                    lo_score_3 = 'extra';
-                                }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 4){
-                                    lo_score_4 = 'extra';
-                                }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 5){
-                                    lo_score_5 = 'extra';
-                                }else{
-                                    lo_score_0 = 'extra';
-                                }
-                                console.log(lo_score_0, lo_score_1, lo_score_2, lo_score_3, lo_score_4, lo_score_5);
-                                console.log(response.assignment_lo_rubric[learingOutcome].slc_score,'===score===');
                                 rubric_html += '\
                                     <tr data-toggle="collapse" data-target=".order1">\
                                         <td class="learningcell">'+response.assignment_lo_rubric[learingOutcome].lc_description+'</td>\
-                                        <td class="modal-table-content '+lo_score_0+'"></td>\
-                                        <td class="modal-table-content '+lo_score_1+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_one_description+'</td>\
-                                        <td class="modal-table-content '+lo_score_2+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_two_description+'</td>\
-                                        <td class="modal-table-content '+lo_score_3+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_three_description+'</td>\
-                                        <td class="modal-table-content '+lo_score_4+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_four_description+'</td>\
-                                        <td class="modal-table-content '+lo_score_5+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_five_description+'</td>\
+                                        <td class="modal-table-content extra_'+response.assignment_lo_rubric[learingOutcome].slc_score+'"></td>\
+                                        <td class="modal-table-content extra_'+response.assignment_lo_rubric[learingOutcome].slc_score+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_one_description+'</td>\
+                                        <td class="modal-table-content extra_'+response.assignment_lo_rubric[learingOutcome].slc_score+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_two_description+'</td>\
+                                        <td class="modal-table-content extra_'+response.assignment_lo_rubric[learingOutcome].slc_score+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_three_description+'</td>\
+                                        <td class="modal-table-content extra_'+response.assignment_lo_rubric[learingOutcome].slc_score+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_four_description+'</td>\
+                                        <td class="modal-table-content extra_'+response.assignment_lo_rubric[learingOutcome].slc_score+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_five_description+'</td>\
                                     </tr>\
                                 '
                                 if (response.assignment_lo_rubric[learingOutcome].slc_comment != null && response.assignment_lo_rubric[learingOutcome].slc_comment.length > 0){
