@@ -193,12 +193,12 @@ from courseware.url_helpers import get_redirect_url
                                 }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 5){
                                     lo_score_5 = 'extra';
                                 }else{
-                                    lo_score_0 = 'extra'
+                                    lo_score_0 = 'extra';
                                 }
                                 rubric_html += '\
                                     <tr data-toggle="collapse" data-target=".order1">\
                                         <td class="learningcell">'+response.assignment_lo_rubric[learingOutcome].lc_description+'</td>\
-                                        <td class="'+lo_score_0+'" ></td>\
+                                        <td class="'+lo_score_0+'"></td>\
                                         <td class="'+lo_score_1+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_one_description+'</td>\
                                         <td class="'+lo_score_2+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_two_description+'</td>\
                                         <td class="'+lo_score_3+'">'+response.assignment_lo_rubric[learingOutcome].lc_level_three_description+'</td>\
