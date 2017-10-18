@@ -302,18 +302,18 @@ from courseware.url_helpers import get_redirect_url
                             for (learingOutcome in response.assignment_lo_rubric){
                                 rubric_html += '\
                                     <tr data-toggle="collapse" data-target=".order1">\
-                                        <td class="learningcell">'+learingOutcome['lc_description']+'</td>\
+                                        <td class="learningcell">'+response.assignment_lo_rubric[learingOutcome].lc_description+'</td>\
                                         <td></td>\
-                                        <td>'+learingOutcome.lc_level_one_description+'</td>\
-                                        <td>'+learingOutcome.lc_level_two_description+'</td>\
-                                        <td>'+learingOutcome.lc_level_three_description+'</td>\
-                                        <td>'+learingOutcome.lc_level_four_description+'</td>\
-                                        <td>'+learingOutcome.lc_level_five_description+'</td>\
+                                        <td>'+response.assignment_lo_rubric[learingOutcome].lc_level_one_description+'</td>\
+                                        <td>'+response.assignment_lo_rubric[learingOutcome].lc_level_two_description+'</td>\
+                                        <td>'+response.assignment_lo_rubric[learingOutcome].lc_level_three_description+'</td>\
+                                        <td>'+response.assignment_lo_rubric[learingOutcome].lc_level_four_description+'</td>\
+                                        <td>'+response.assignment_lo_rubric[learingOutcome].lc_level_five_description+'</td>\
                                     </tr>\
                                 '
                                 feedbackComments_html += '\
-                                                            <p>'+learingOutcome.lc_description+'</p>\
-                                                            <p>'+learingOutcome.slc_comment+'</p>\
+                                                            <p>'+response.assignment_lo_rubric[learingOutcome].lc_description+'</p>\
+                                                            <p>'+response.assignment_lo_rubric[learingOutcome].slc_comment+'</p>\
                                                         '
                             }
                             var feedbackHeader_html = '\
