@@ -106,7 +106,14 @@ def get_feedback(request):
             if assignment:
                 scoredassignment = ScoredAssignment.objects.all().filter(assignment=assignment[0],
                                                                         user=student_id)
-                assignmentsData['course_name'] = CourseKey.from_string(assignment[0].course_id)
+                temp_course = get_course_by_id(
+                                CourseKey.from_string(assignment[0].course_id),
+                                depth=0
+                              )
+                assignmentsData['course_name'] = getattr(temp_course,
+                                                        'display_name_with_default',
+                                                        'Course Name'
+                                                    )
                 assignmentsData['assignment_name'] = assignment[0].name[assignment[0].name.index('(')+1:assignment[0].name.index(')')]
 
                 if scoredassignment:
@@ -131,7 +138,7 @@ def get_feedback(request):
                     content = json.dumps({'assignment_lo_rubric':assignment_lo_rubric,
                                           'assignmentsData':assignmentsData
                                         })
-                    return HttpResponse(content, content_type="application/json",
+                    return HttpResponse(content, content_type="application/javascript",
                                     status=200)
 
         except:
