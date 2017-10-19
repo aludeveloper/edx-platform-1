@@ -58,7 +58,7 @@ from courseware.url_helpers import get_redirect_url
                                                 %>
                                                 <div class="col-sm-6 assignmentBlockClick" rel="${get_redirect_url(temp_course_key, temp_usage_key)}">
                                                     <h4>${assignmentsData.assignment.name[assignmentsData.assignment.name.index('(')+1:assignmentsData.assignment.name.index(')')]}</h4> 
-                                                    <h5>${"".join(e[0] for e in submittedCoursesList[assignmentsData.assignment.course_id].split())}</h5>
+                                                    <h5>${submittedCoursesList[assignmentsData.assignment.course_id]}</h5>
                                                 </div><!--div-->
                                                 <div class="col-sm-6">
                                                     <div class="view viewFeedback" data-assignmentid="${assignmentsData.assignment.id}">
@@ -93,7 +93,7 @@ from courseware.url_helpers import get_redirect_url
                             <thead>
                                 <tr>
                                     <th class="learningrow learningcell">Learning Outcome</th>
-                                    <th></th>
+                                    <th class="learningrow"></th>
                                     <th class="learningrow"></th>
                                     <th class="learningrow"></th>
                                     <th class="learningrow">Level Score</th>
@@ -103,13 +103,13 @@ from courseware.url_helpers import get_redirect_url
                             </thead>
                             <thead>
                                 <tr>
-                                    <th class="learningcell1"></th>
-                                    <th>0</th>
-                                    <th>1 - Beginning</th>
-                                    <th>2 - Developing</th>
-                                    <th>3 - Approaching</th>
-                                    <th>4 - Proficient</th>
-                                    <th>5 - Exemplary</th>
+                                    <th class="learningrow1 learningcell1"></th>
+                                    <th class="learningrow1">0</th>
+                                    <th class="learningrow1">1 - Beginning</th>
+                                    <th class="learningrow1">2 - Developing</th>
+                                    <th class="learningrow1">3 - Approaching</th>
+                                    <th class="learningrow1">4 - Proficient</th>
+                                    <th class="learningrow1">5 - Exemplary</th>
                                 </tr>
                             </thead>
                             <tbody class="feeback_modal_table_body">

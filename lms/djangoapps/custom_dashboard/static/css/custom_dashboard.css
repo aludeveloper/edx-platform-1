@@ -174,7 +174,7 @@ li[aria-expanded="true"]{
     line-height:30px;
     float:left;
     border-radius:2px;
-    margin:8px 5px 0px 0px;}
+    margin:8px 18px 0px 0px;}
 .blue1{
     width:30px;
     height:10px;
@@ -220,7 +220,7 @@ li[aria-expanded="true"]{
 }
 .feeback_modal .table thead th {
     vertical-align: bottom; 
-    border-bottom: 2px solid #3FAE79;
+    border-bottom: 2px solid #686868;
 }
 .feeback_modal tr.collapse.in {
     display:table-row;
@@ -243,6 +243,9 @@ li[aria-expanded="true"]{
     text-align: center;
     color: white;
     background-color: #3E89E3 !important;
+}
+.learningrow1{
+
 }
 
 .feeback_modal .table td, .feeback_modal .table th {
