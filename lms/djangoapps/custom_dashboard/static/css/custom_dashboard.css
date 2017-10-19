@@ -238,7 +238,7 @@ li[aria-expanded="true"]{
     background-color: #CEE0F6;
 }
 
-.feedback_modal .learningrow{
+.learningrow{
     width:25%;
     font-size: 14px;
     text-align: center;
