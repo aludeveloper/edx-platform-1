@@ -26,8 +26,8 @@ from courseware.url_helpers import get_redirect_url
         <div class="row">
             <div class="col-sm-12 nav-tab-holder">
                 <ul class="nav nav-tabs row" role="tablist">
-                    <li role="presentation" style="opacity: 0; cursor: pointer;" class="non-active col-sm-6 upcomingAssignmentsTabClick"><a href="javascript:void(0);" style="cursor: pointer;" aria-controls="home" role="tab" data-toggle="tab">Upcoming Assignment</a></li>
-                    <li role="presentation" class="active col-sm-6 submittedAssignmentsTabClick"><a href="javascript:void(0);" aria-controls="profile" role="tab" data-toggle="tab">Graded Assignment</a></li>
+                    <!-- <li role="presentation" style="opacity: 0; cursor: pointer;" class="non-active col-sm-6 upcomingAssignmentsTabClick"><a href="javascript:void(0);" style="cursor: pointer;" aria-controls="home" role="tab" data-toggle="tab">Upcoming Assignment</a></li> -->
+                    <li role="presentation" class="active col-sm-12 submittedAssignmentsTabClick"><a href="javascript:void(0);" aria-controls="profile" role="tab" data-toggle="tab">Graded Assignments</a></li>
                 </ul>
             </div>
         </div>
@@ -57,8 +57,8 @@ from courseware.url_helpers import get_redirect_url
                                                     temp_course_key = CourseKey.from_string(assignmentsData.assignment.course_id)
                                                 %>
                                                 <div class="col-sm-6 assignmentBlockClick" rel="${get_redirect_url(temp_course_key, temp_usage_key)}">
-                                                    <h6>${assignmentsData.assignment.name[assignmentsData.assignment.name.index('(')+1:assignmentsData.assignment.name.index(')')]}</h6> 
-                                                    <p>${"".join(e[0] for e in submittedCoursesList[assignmentsData.assignment.course_id].split())}</p>
+                                                    <h4>${assignmentsData.assignment.name[assignmentsData.assignment.name.index('(')+1:assignmentsData.assignment.name.index(')')]}</h4> 
+                                                    <h5>${"".join(e[0] for e in submittedCoursesList[assignmentsData.assignment.course_id].split())}</h5>
                                                 </div><!--div-->
                                                 <div class="col-sm-6">
                                                     <div class="view viewFeedback" data-assignmentid="${assignmentsData.assignment.id}">
@@ -178,6 +178,7 @@ from courseware.url_helpers import get_redirect_url
                                                         <h5>Learning Outcome Comments:</h5>\
                                                         <hr>\
                                                     '
+                        var feedbackComments_flag = false;
                         var rubric_html = ''
                         if (response.assignment_lo_rubric.length > 0){
                             for (learingOutcome in response.assignment_lo_rubric){
@@ -198,7 +199,7 @@ from courseware.url_helpers import get_redirect_url
                                     lo_score_4 = 'extra';
                                 }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 5){
                                     lo_score_5 = 'extra';
-                                }else{
+                                }else if(response.assignment_lo_rubric[learingOutcome].slc_score == 0){
                                     lo_score_0 = 'extra';
                                 }
                                 console.log(lo_score_0, lo_score_1, lo_score_2, lo_score_3, lo_score_4, lo_score_5);
@@ -215,6 +216,7 @@ from courseware.url_helpers import get_redirect_url
                                     </tr>\
                                 '
                                 if (response.assignment_lo_rubric[learingOutcome].slc_comment != null && response.assignment_lo_rubric[learingOutcome].slc_comment.length > 0){
+                                    feedbackComments_flag = true;
                                     feedbackComments_html += '\
                                                                 <p>'+response.assignment_lo_rubric[learingOutcome].lc_description+'</p>\
                                                                 <p>'+response.assignment_lo_rubric[learingOutcome].slc_comment+'</p>\
@@ -228,11 +230,21 @@ from courseware.url_helpers import get_redirect_url
                                                                 <h4>'+response.assignmentsData.assignment_name+'</h4>\
                                                                 <h4>'+response.assignmentsData.course_name+'</h4>\
                                                                 <hr>\
-                                                                <h5>Overall Feedback and Grade</h5>\
-                                                                <p>'+response.assignmentsData.overall_feedback+'</p>\
+                                                        '
+                            if(response.assignmentsData.overall_feedback){
+                                feedbackHeader_html += '\
+                                                                    <h5>Overall Feedback and Grade</h5>\
+                                                                    <p>'+response.assignmentsData.overall_feedback+'</p>\
+                                                        '
+                            }
+
+                            feedbackHeader_html += '\
                                                             </div>\
                                                         </div>\
                                                     '
+                            if (!feedbackComments_flag){
+                                feedbackComments_html = ''
+                            }
                             
                             $('.feeback_modal_header').html(feedbackHeader_html);
                             $('.feeback_modal_table_body').html(rubric_html);
