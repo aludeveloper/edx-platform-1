@@ -239,11 +239,10 @@ li[aria-expanded="true"]{
 }
 
 .learningrow{
-    width:25%;
     font-size: 14px;
     text-align: center;
     color: white;
-    background-color: #CEE0F6 !important;
+    background-color: #3E89E3 !important;
 }
 
 .feeback_modal .table td, .feeback_modal .table th {
