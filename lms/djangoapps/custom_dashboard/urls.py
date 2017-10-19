@@ -1,6 +1,7 @@
 from django.conf.urls import url
-from . import views
+from custom_dashboard import views
 
 urlpatterns = (
-    url(r'^$', views.custom_dashboard, name="custom_dashboard"),
+    url(r'^studentsdashboard$', 'views.custom_dashboard', name="custom_dashboard"),
+    url(r'^studentfeedback$', 'views.get_feedback', name="studentfeedback"),
 )

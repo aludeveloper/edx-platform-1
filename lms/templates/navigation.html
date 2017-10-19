@@ -104,6 +104,12 @@ site_status_msg = get_site_status_msg(course_id)
             </li>
           % endif
 
+          % if not user.is_staff:
+            <li class="item nav-global-01">
+              <a href="/studentsdashboard">Graded Assignments</a>
+            </li>
+          % endif
+
           %if settings.FEATURES.get('ENABLE_SYSADMIN_DASHBOARD','') and user.is_staff:
             <li class="item">
               ## Translators: This is short for "System administration".
