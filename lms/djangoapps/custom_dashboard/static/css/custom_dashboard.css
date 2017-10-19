@@ -88,7 +88,7 @@ li[aria-expanded="true"]{
 .nav-tab-holder .nav-tabs > li > a {
   color: #686868;
   margin: 0;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
  
 }
@@ -150,7 +150,9 @@ li[aria-expanded="true"]{
     border:1px solid #333;
     margin:10px;
     height:50px;
-    padding:10px;}
+    padding:10px;
+    background-color: rgb(196, 196, 196);
+}
 .upcomingsigns{
     float:right;
     margin:10px;
