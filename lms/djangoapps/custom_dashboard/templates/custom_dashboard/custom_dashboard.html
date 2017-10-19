@@ -91,8 +91,8 @@ from courseware.url_helpers import get_redirect_url
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
-                                    <th class="learningcell1">Learning Outcome</th>
+                                <tr class="learningrow">
+                                    <th>Learning Outcome</th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -229,7 +229,7 @@ from courseware.url_helpers import get_redirect_url
                                                             <div class="col-md-12">\
                                                                 <h4>'+response.assignmentsData.assignment_name+'</h4>\
                                                                 <h4>'+response.assignmentsData.course_name+'</h4>\
-                                                                <hr>\
+                                                                <hr style="border-top: 2px solid #3E89E3;">\
                                                         '
                             if(response.assignmentsData.overall_feedback){
                                 feedbackHeader_html += '\

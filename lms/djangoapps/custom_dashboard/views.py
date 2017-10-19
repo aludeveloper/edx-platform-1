@@ -24,12 +24,14 @@ def custom_dashboard(request):
     print "Custom Dashboard called"
     submittedAssignments = None
     # TODO - COLORS
-    colors = [ '#CA0022', '#DC3C0C', '#EB6900', '#E7AB18',
-               '#E9DF34', '#E2F68F', '#8CCC44', '#1DAA3A',
-               '#30650C', '#108850', '#2AC5C0', '#8DC8E4',
-               '#328FE1', '#283070', '#590095', '#A037E7',
-               '#A20089', '#DE52BC', '#753407', '#890001',
-               '#F68E69', '#137E7A', '#F99AB9', '#000000' ]
+    colors = [ '#CA0022', '#283070', '#1DAA3A', '#E9DF34',
+               '#328FE1', '#A20089', '#EB6900', '#108850',
+               '#2AC5C0', '#590095', '#753407', '#E7AB18',
+               '#A037E7', '#30650C', '#DE52BC', '#8DC8E4',
+               '#F68E69', '#137E7A', '#DC3C0C', '#E2F68F',
+               '#890001', '#8CCC44', '#F99AB9', '#000000' ]
+
+               
 
     submittedAssignments = submitted_assignments(request)
     # upcoming_assginments = upcoming_assginments(request)
