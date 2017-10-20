@@ -110,6 +110,10 @@ urlpatterns = (
     # URLs for PCI tool
     url(r'^pci/', include('lms.djangoapps.pcitool.urls', namespace="pcitool")),
 
+    # URLs for custom dashboard
+    # Consider refactoring so all details are handled in app's urls file
+    url(r'^studentsdashboard', 'custom_dashboard.views.custom_dashboard', name="custom_dashboard"),
+    url(r'^studentfeedback', 'custom_dashboard.views.get_feedback', name="studentfeedback"),
 )
 
 urlpatterns += (

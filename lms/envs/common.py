@@ -2682,6 +2682,9 @@ OPTIONAL_APPS = (
 
     # ALUx PCI tool application
     'pcitool',
+
+   # ALUx custom dashboard application
+    'custom_dashboard',
 )
 
 for app_name in OPTIONAL_APPS:
