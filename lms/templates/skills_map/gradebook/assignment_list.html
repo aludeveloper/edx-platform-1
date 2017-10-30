@@ -43,10 +43,14 @@ from django.core.urlresolvers import reverse
             <hr style="padding:0px;height:3px;border:none;color:#eee;background-color:#eee;">
 
 
-
             <a type="button" class="btn btn-default" id="create-item-modal">
                 <i class="fa fa-plus"></i> Add ALUx Assignment to Skills HQ
                 ## Add ${item.get_child_type()._meta.verbose_name}
+            </a>
+
+
+            <a type="button" class="btn btn-primary" id="download-grade-sheet">
+                <i class="fa fa-download"></i> Download Grade Sheet
             </a>
 
 
@@ -105,8 +109,30 @@ from django.core.urlresolvers import reverse
     </div>
 </div>
 
+<div id="download-gradesheet-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Select cohort to download grade sheet</h4>
+        </div>
+
+      <div class="modal-body">
+
+      </div>
+    </div>
+    </div>
+</div>
+
 <script>
     $('#create-item-modal').click(function() {
         $('#create-modal').modal('show');
+    });
+
+    $('#download-grade-sheet').click(function() {
+        $('#download-gradesheet-modal').modal('show');
     });
 </script>
