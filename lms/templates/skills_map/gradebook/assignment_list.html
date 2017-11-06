@@ -122,6 +122,10 @@ from django.core.urlresolvers import reverse
 
       <div class="modal-body">
 
+          % for cohort in cohorts:
+              <button class="btn btn-default" id="gradesheet-download-${cohort.get('id')}"> ${cohort.get('name')} </button>
+          % endfor
+
       </div>
     </div>
     </div>
@@ -135,4 +139,39 @@ from django.core.urlresolvers import reverse
     $('#download-grade-sheet').click(function() {
         $('#download-gradesheet-modal').modal('show');
     });
+</script>
+
+
+<script type="text/javascript">
+
+    % for cohort  in cohorts:
+         <%
+             cohort_id = cohort.get('id')
+         %>
+
+         $(document).on('click', '#gradesheet-download-${cohort.get('id')}', function(){
+
+##              const button = `<button type="button" class="btn btn-default" id="data-download-${item.get('id')}">
+##                         <i class="fa fa-refresh fa-spin"></i>
+##                         Preparing Most Recent Data
+##                        </button>`
+##
+##             const old_button = `<button type="button" class="btn btn-default" id="data-download-${item.get('id')}">
+##                         Download Most Recent Data
+##                        </button>`
+##
+##              $('#data-download-${item.get('id')}').replaceWith(button);
+
+             window.open('${reverse("skills_map:course-grade-sheet-download",
+                                kwargs={"course_id": course_id, "cohort_id": cohort_id })}',
+                                "_self");
+            setTimeout(function() {
+##                 $('#data-download-${item.get('id')}').replaceWith(old_button);
+            }, 10 * 1000);
+
+         });
+
+    % endfor
+
+
 </script>
