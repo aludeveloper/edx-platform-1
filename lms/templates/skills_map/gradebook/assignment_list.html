@@ -48,9 +48,12 @@ from django.core.urlresolvers import reverse
                 ## Add ${item.get_child_type()._meta.verbose_name}
             </a>
 
-
             <a type="button" class="btn btn-primary" id="download-grade-sheet">
                 <i class="fa fa-download"></i> Download Grade Sheet
+            </a>
+
+            <a type="button" class="btn btn-danger pull-right" id="delete-assignment">
+                <i class="fa fa-trash"></i> Delete Assignment
             </a>
 
 
@@ -109,6 +112,61 @@ from django.core.urlresolvers import reverse
     </div>
 </div>
 
+
+
+
+
+<div id="delete-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Delete an Assignment</h4>
+        </div>
+
+      <div class="modal-body">
+         <form action="${reverse('skills_map:delete-assignment')}" method="post">
+             <input type="hidden" name="csrfmiddlewaretoken" value="${ csrf_token }">
+
+                  <div class="input-group">
+                      <div class="form-group">
+                          <label for="sel1">Select an ALUx assignment to delete:</label>
+                          <select class="form-control" name="assignment">
+                              % for assignment in hq_assignments:
+                                  <option value='
+                                  {"assignment-id": "${assignment.assignment_id}",
+                                   "course-id": "${course_id}"}'>
+                                    ${assignment.name}
+                                  </option>
+                              % endfor
+
+                          </select>
+                      </div>
+
+                    </div>
+
+                <p>Deleting an assignment is a permanent action that cannot be undone.
+                    Please make sure you intend to delete this assignment before clicking "Delete"</p>
+
+                <br>
+                <br>
+            <input class="btn btn-danger pull-right" type="submit" value="Delete">
+            <br>
+            <br>
+
+         </form>
+      </div>
+    </div>
+    </div>
+</div>
+
+
+
+
+
 <div id="download-gradesheet-modal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
@@ -138,6 +196,10 @@ from django.core.urlresolvers import reverse
 
     $('#download-grade-sheet').click(function() {
         $('#download-gradesheet-modal').modal('show');
+    });
+
+    $('#delete-assignment').click(function() {
+        $('#delete-modal').modal('show');
     });
 </script>
 
