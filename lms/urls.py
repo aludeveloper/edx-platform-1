@@ -108,7 +108,7 @@ urlpatterns = (
     url(r'^staff-hq/', include('lms.djangoapps.alux_skills_map.urls', namespace="skills_map")),
 
     # URLs for PCI tool
-    url(r'^pci/', include('lms.djangoapps.pcitool.urls', namespace="pcitool")),
+    url(r'^pgc/', include('lms.djangoapps.pcitool.urls', namespace="pcitool")),
 
     # URLs for custom dashboard
     # Consider refactoring so all details are handled in app's urls file
