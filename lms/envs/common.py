@@ -2252,7 +2252,7 @@ INSTALLED_APPS = (
     'pcitool',
 
     # ALUx custom dashboard application
-    'custom_dashboard',
+    #'custom_dashboard',
 )
 
 ######################### CSRF #########################################
