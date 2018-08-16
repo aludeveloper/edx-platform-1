@@ -123,7 +123,7 @@ urlpatterns = (
     url(r'^pci/', include('pcitool.urls', namespace="pcitool")),
 
     # URLs for custom dashboard
-    url(r'^student_custom_dashboard/', include('custom_dashboard.urls')),
+    # url(r'^student_custom_dashboard/', include('custom_dashboard.urls')),
 )
 
 # TODO: This needs to move to a separate urls.py once the student_account and
