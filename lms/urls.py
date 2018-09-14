@@ -114,7 +114,11 @@ urlpatterns = (
     url(r'^api/experiments/', include('experiments.urls', namespace='api_experiments')),
 
     #URLs for PCI tool
-    url(r'^pci/', include('lms.djangoapps.pcitool.urls', namespace="pcitool")),
+    url(r'^pci/', include('pcitool.urls', namespace="pcitool")),
+
+    url(r'^student_custom_dashboard/', include('custom_dashboard.urls')),
+
+    url(r'^staff-hq/', include('alux_skills_map.urls', namespace="skills_map")),
 )
 
 # TODO: This needs to move to a separate urls.py once the student_account and

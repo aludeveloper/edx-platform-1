@@ -2238,6 +2238,11 @@ INSTALLED_APPS = (
     'openedx.features.enterprise_support',
 
     'experiments',
+
+    'alux_skills_map',
+
+    'custom_dashboard',
+
 )
 
 ######################### CSRF #########################################
