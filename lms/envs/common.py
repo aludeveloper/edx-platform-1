@@ -2763,7 +2763,7 @@ OPTIONAL_APPS = (
     'mentoring',
     'problem_builder',
     'edx_sga',
-
+    'pcitool',
     # edx-ora2
     'submissions',
     'openassessment',
