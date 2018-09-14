@@ -92,3 +92,11 @@ git+https://github.com/edx/edx-proctoring.git@0.18.1#egg=edx-proctoring==0.18.1
 # Third Party XBlocks
 git+https://github.com/open-craft/xblock-poll@v1.2.7#egg=xblock-poll==1.2.7
 git+https://github.com/edx-solutions/xblock-drag-and-drop-v2@v2.0.18#egg=xblock-drag-and-drop-v2==2.0.18
+
+-e git+git@github.com:aludeveloper/alux_skills_map.git@master#egg=alux_skills_map
+-e git+git@github.com:aludeveloper/alux_student_dashboard.git@raccoongang-develop#egg=alux_student_dashboard
+-e git+git@github.com:aludeveloper/xblock-adapter.git@master#egg=xblock_adapter
+-e git+git@github.com:aludeveloper/aluxsga.git@master#egg=aluxsga
+-e git+git@github.com:aludeveloper/alux_pci_xblock.git@master#egg=alux_pci_xblock
+-e git+git@github.com:aludeveloper/pcitool.git@master#egg=pcitool
+
